@@ -5,7 +5,7 @@ class Scene01
 {
 private:
 	GLuint			m_shaderProgramID = 0;
-	GLuint			VBO_Test{};
+	GLuint			VBO[2];
 	vector<vec3>	vTest;
 
 public:
@@ -21,5 +21,8 @@ private:
 	void DrawStage1(float elapsedTime);
 
 	void CreateVertexBufferObjectBox();
+
+private:
+	// 변환 파이프라인
 };
 

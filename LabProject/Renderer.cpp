@@ -34,7 +34,7 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	}
 
 	// 플레이어 생성
-	m_Player = new Player();
+	m_Player = new Player(shaderProgramID);
 
 	// 씬 생성
 	m_Scene01 = new Scene01(shaderProgramID);

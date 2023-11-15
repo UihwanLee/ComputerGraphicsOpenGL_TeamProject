@@ -27,20 +27,35 @@ void Scene01::Update(float elapsedTime)
 
 void Scene01::DrawStartStage(float elapsedTime)
 {
+	GLfloat CubeColor[24] = {
+		   1.0f, 0.0f, 0.0f, // 0
+		   0.0f, 1.0f, 0.0f, // 1
+		   0.0f, 0.0f, 1.0f, // 2
+		   1.0f, 1.0f, 0.0f, // 3
+		   0.0f, 1.0f, 1.0f, // 4
+		   1.0f, 0.0f, 1.0f, // 5
+		   0.0f, 0.0f, 0.0f, // 6
+		   1.0f, 1.0f, 1.0f  // 7
+	};
+
 	glUseProgram(m_shaderProgramID);
 	glm::mat4 m_model = glm::mat4(1.0f);
 
-	glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(m_model));
+	unsigned int modelLocation = glGetUniformLocation(m_shaderProgramID, "modelTransform");
 
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_model));
 
-	GLint AttributePosition = glGetAttribLocation(m_shaderProgramID, "in_Position");
-	glEnableVertexAttribArray(AttributePosition);
-	glUniform3f(glGetUniformLocation(m_shaderProgramID, "in_Color"), 0.f, 1.f, 0.f);
-	glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(m_model));
+	// layout 0 -> vPos : VBO[0]
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 3, (GLvoid*)(sizeof(GLfloat) * 0));
 
+	// layout 1 -> vColor : VBO[1]
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, vTest.size() * sizeof(glm::vec3), CubeColor, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_Test);
-	glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 3, (GLvoid*)(sizeof(GLfloat) * 0));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
 	glDrawArrays(GL_TRIANGLES, 0, vTest.size());
 }
@@ -90,7 +105,10 @@ void Scene01::CreateVertexBufferObjectBox()
 		vTest.push_back(Cube[i]);
 	}
 
-	glGenBuffers(1, &VBO_Test);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_Test);
+	glGenBuffers(2, VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
 	glBufferData(GL_ARRAY_BUFFER, vTest.size() * sizeof(glm::vec3), vTest.data(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, vTest.size() * sizeof(glm::vec3), CubeColor, GL_STATIC_DRAW);
 }
