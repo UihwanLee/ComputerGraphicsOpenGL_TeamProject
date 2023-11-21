@@ -17,7 +17,7 @@ void Scene01::Init()
 
 void Scene01::Render(float elapsedTime)
 {
-	DrawStartStage(elapsedTime);
+	//DrawStartStage(elapsedTime);
 	DrawStage1(elapsedTime);
 }
 

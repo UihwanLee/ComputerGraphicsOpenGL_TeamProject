@@ -1,6 +1,9 @@
 #pragma once
 
 // Define 
+
+#define _CRT_SECURE_NO_WARNINGS
+
 #define WINDOW_HEIGHT 600
 #define WINDOW_WIDTH 800
 

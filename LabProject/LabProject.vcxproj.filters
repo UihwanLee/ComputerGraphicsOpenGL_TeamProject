@@ -16,6 +16,9 @@
     <Filter Include="리소스 파일\Shader">
       <UniqueIdentifier>{9632a49f-c599-426c-a02c-f8db4d3bcabc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="리소스 파일\Models">
+      <UniqueIdentifier>{20cab4f2-608c-4e1b-980b-ffc59fc29330}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -40,6 +43,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Figure.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -73,5 +79,13 @@
     <ClInclude Include="Figure.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="cube.txt">
+      <Filter>리소스 파일\Models</Filter>
+    </Text>
   </ItemGroup>
 </Project>

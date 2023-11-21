@@ -33,9 +33,6 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 		m_Initialized = true;
 	}
 
-	// 플레이어 생성
-	m_Player = new Player(shaderProgramID);
-
 	// 씬 생성
 	m_Scene01 = new Scene01(shaderProgramID);
 	m_Scene02 = new Scene02(shaderProgramID);
@@ -167,7 +164,6 @@ void Renderer::ConvertToOpenGL(int x, int y, float* ox, float* oy)
 void Renderer::DrawAll(float elapsedTime)
 {
 	// Player는 항상 Render
-	m_Player->Render(elapsedTime);
 
 	// m_Scene01 수행이 끝났으면 (STAGE1 클리어 시) m_Scene02 Render 
 	m_Scene01->Render(elapsedTime);
@@ -176,7 +172,6 @@ void Renderer::DrawAll(float elapsedTime)
 
 void Renderer::UpdateAll(float elapsefTime)
 {
-	m_Player->Update(elapsefTime);
 	m_Scene01->Update(elapsefTime);
 	m_Scene02->Update(elapsefTime);
 }

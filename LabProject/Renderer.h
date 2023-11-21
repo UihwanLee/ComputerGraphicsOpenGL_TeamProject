@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Object.h"
 #include "Player.h"
 #include "Scene01.h"
 #include "Scene02.h"
@@ -7,7 +8,6 @@
 class Renderer
 {
 private:
-	Player			*m_Player = NULL;
 	Scene01			*m_Scene01 = NULL;
 	Scene02			*m_Scene02 = NULL;
 
