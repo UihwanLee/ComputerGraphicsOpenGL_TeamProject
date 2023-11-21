@@ -2,6 +2,8 @@
 
 // Define 
 
+#define GRAVITY 9.8f
+
 #define _CRT_SECURE_NO_WARNINGS
 
 #define WINDOW_HEIGHT 600

@@ -39,5 +39,4 @@ public:
 	void Scale(float x, float y, float z);
 
 	bool LoadMeshInfoFromFile(const char* file_name);
-
 };

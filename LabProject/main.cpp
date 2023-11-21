@@ -28,7 +28,6 @@ GLvoid drawScene()
 	// elapsed time (ms -> s)
 	float elapsedTimeInSec = (float)elapsedTime / 1000.f;
 
-
 	//cout << "elapsedTime      - " << elapsedTime << '\n'; 
 	//cout << "elapsedTimeInSec - " << elapsedTimeInSec << '\n';
 

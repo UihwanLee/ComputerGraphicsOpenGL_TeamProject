@@ -41,12 +41,14 @@ void Object::SetActive(bool bActive)
 	m_bActive = bActive;
 }
 
+
 void Object::Move(float x, float y, float z)
 {
 	m_position.x += x;
 	m_position.y += y;
 	m_position.z += z;
 }
+
 
 void Object::Rotate(float x, float y, float z)
 {
