@@ -59,7 +59,7 @@ void Scene02::DrawView()
 	glm::mat4 view = glm::mat4(1.0f);
 
 	view = glm::lookAt(cameraPos, cameraDirection, cameraUp);
-	cout << cameraDirection.x << ", " << cameraDirection.y << ", " << cameraDirection.z << endl;
+	// cout << cameraDirection.x << ", " << cameraDirection.y << ", " << cameraDirection.z << endl;
  
 	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);		// �亯ȯ
 }

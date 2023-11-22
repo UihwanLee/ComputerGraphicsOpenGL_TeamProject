@@ -88,16 +88,30 @@ GLvoid SpecialUpKey(int key, int x, int y)
 
 }
 
+// 마우스 커서를 숨기는 함수
+void hideCursor() {
+	// Windows 플랫폼에서 사용하는 코드
+	ShowCursor(FALSE);
+}
+
+// 마우스 커서를 표시하는 함수
+void showCursor() {
+	// Windows 플랫폼에서 사용하는 코드
+	ShowCursor(TRUE);
+
+}
+
 void Mouse(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 		// 마우스 클릭 ...
 
-		float start_x = (2.0f * x) / glutGet(GLUT_WINDOW_WIDTH) - 1.0f; // x 끝점
-		float start_y = 1.0f - (2.0f * y) / glutGet(GLUT_WINDOW_HEIGHT); // y 끝점
+		lastX = x;
+		lastY = y;
 
-		// curAngle = GetClickPos(x, 0.0f, 800.0f, -60.0f, 60.0f);
+		// 마우스 커서 켜기
+		// hideCursor();
 
 		g_left_button = true;
 	}
