@@ -19,6 +19,12 @@
     <Filter Include="리소스 파일\Models">
       <UniqueIdentifier>{20cab4f2-608c-4e1b-980b-ffc59fc29330}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{d91d5a03-e76b-4ea8-afaf-3430c7f3abf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KeyBoard">
+      <UniqueIdentifier>{b7b36ed6-5d2d-48fc-8228-ecd9627f21a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,6 +53,15 @@
     </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyBoard.cpp">
+      <Filter>KeyBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +95,18 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyBoard.h">
+      <Filter>KeyBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

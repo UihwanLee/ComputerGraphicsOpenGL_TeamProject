@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "timeapi.h"
 #include "Renderer.h"
+#include "KeyBoard.h"
+#include "CameraController.h"
 
 Renderer* m_renderer = nullptr;
 
@@ -45,6 +47,39 @@ void Idle()
 	drawScene();
 }
 
+void MouseInput(int button, int state, int x, int y)
+{
+	KeyBoard::GetInstance()->MouseDown(button, state, x, y);
+	CameraController::GetInstance()->MouseDown(button);
+}
+
+void MouseMove(int x, int y)
+{
+	KeyBoard::GetInstance()->MouseMove(x, y);
+	CameraController::GetInstance()->MouseMove();
+}
+
+void KeyDownInput(unsigned char key, int x, int y)
+{
+	KeyBoard::GetInstance()->KeyDown(key);
+}
+
+void KeyUpInput(unsigned char key, int x, int y)
+{
+	KeyBoard::GetInstance()->KeyUp(key);
+
+}
+
+void SpecialKeyDownInput(int id, int x, int y)
+{
+
+}
+
+void SpecialKeyUpInput(int id, int x, int y)
+{
+
+}
+
 GLvoid Reshape(int w, int h) //--- 콜백 함수: 다시 그리기 콜백 함수
 {
 	glViewport(0, 0, w, h);
@@ -73,6 +108,16 @@ int main(int argc, char** argv)
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(Reshape);
 
+	// 키보드
+	glutKeyboardFunc(KeyDownInput);
+	glutKeyboardUpFunc(KeyUpInput);
+	glutSpecialFunc(SpecialKeyDownInput);
+	glutSpecialUpFunc(SpecialKeyUpInput);
+
+	// 마우스
+	glutMouseFunc(MouseInput);
+	glutMotionFunc(MouseMove);
+
 	// 애니메이션
 	glutIdleFunc(Idle);
 
@@ -80,10 +125,6 @@ int main(int argc, char** argv)
 	g_startTime = timeGetTime();  // 시스템이 시작된 후 경과되는 시간을 ms로 받아준다.
 
 	cout << "===========================================" << endl;
-	cout << "c - 콘솔 출력 on / off" << endl;
-	cout << "+ - 스피드 Up" << endl;
-	cout << "- - 스피드 Down" << endl;
-	cout << "L - 라인 on / off" << endl;
 	cout << "===========================================" << endl;
 
 	glutMainLoop();

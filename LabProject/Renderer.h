@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Scene01.h"
 #include "Scene02.h"
+#include "Camera.h"
 
 class Renderer
 {

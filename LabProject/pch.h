@@ -23,6 +23,7 @@
 #include <cmath>
 #include <numeric>
 #include <numbers>
+#include "Enums.h"
 
 
 #include <gl/glew.h>
