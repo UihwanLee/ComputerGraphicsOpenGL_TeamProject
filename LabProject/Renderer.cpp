@@ -175,6 +175,7 @@ void Renderer::DrawAll(float elapsedTime)
 void Renderer::UpdateAll(float elapsefTime)
 {
 	CameraController::GetInstance()->Update(elapsefTime);
+	LightController::GetInstance()->Update(elapsefTime);
 
 	m_Scene01->Update(elapsefTime);
 	m_Scene02->Update(elapsefTime);

@@ -25,6 +25,9 @@
     <Filter Include="KeyBoard">
       <UniqueIdentifier>{b7b36ed6-5d2d-48fc-8228-ecd9627f21a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{1e2a888d-942f-4937-8a1e-fa8afe5f52e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -62,6 +65,12 @@
     </ClCompile>
     <ClCompile Include="KeyBoard.cpp">
       <Filter>KeyBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="LightController.cpp">
+      <Filter>Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +120,12 @@
     </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="LightController.h">
+      <Filter>Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

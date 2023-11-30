@@ -17,20 +17,7 @@ float f_pitch = 0.0f;
 
 Player::Player()
 {
-	m_cameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_cameraFront = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_cameraUp = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_AT = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	m_position.x = 0.0f; m_position.y = 0.0f; m_position.z = 0.0f;
-	m_rotate.x = 0.0f; m_rotate.y = 0.0f; m_rotate.z = 0.0f;
-	m_scale.x = 1.0f; m_scale.y = 1.0f; m_scale.z = 1.0f;
-
-	m_model = glm::mat4(1.0f);
-	m_bActive = true;
-
-	m_LightPos.x = 0.0f; m_LightPos.y = 1.5f; m_LightPos.z = 0.0f;
-	m_LightColor.r = 0.5f; m_LightColor.g = 0.5f; m_LightColor.b = 0.5f;
 }
 
 Player::~Player()

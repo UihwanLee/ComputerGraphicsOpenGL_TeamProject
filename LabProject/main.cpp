@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "KeyBoard.h"
 #include "CameraController.h"
+#include "LightController.h"
 
 Renderer* m_renderer = nullptr;
 
@@ -51,12 +52,14 @@ void MouseInput(int button, int state, int x, int y)
 {
 	KeyBoard::GetInstance()->MouseDown(button, state, x, y);
 	CameraController::GetInstance()->MouseDown(button);
+	LightController::GetInstance()->MouseDown(button);
 }
 
 void MouseMove(int x, int y)
 {
 	KeyBoard::GetInstance()->MouseMove(x, y);
 	CameraController::GetInstance()->MouseMove();
+	LightController::GetInstance()->MouseMove();
 }
 
 void KeyDownInput(unsigned char key, int x, int y)

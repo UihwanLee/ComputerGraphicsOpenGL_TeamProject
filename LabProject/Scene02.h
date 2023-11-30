@@ -3,6 +3,7 @@
 #include "ObjectManager.h"
 #include "Player.h"
 #include "CameraController.h"
+#include "LightController.h"
 
 
 class Scene02
@@ -12,7 +13,8 @@ private:
 	GLuint			VBO[3];
 	GLuint			texture;
 
-	Camera camera;
+	Camera			camera;
+	Light			light;
 	Player*			m_Player;
 	ObjectManager*	m_ObjectManager;
 

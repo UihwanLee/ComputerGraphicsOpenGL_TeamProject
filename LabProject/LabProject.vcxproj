@@ -137,6 +137,8 @@
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="KeyBoard.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Figure.h" />
     <ClInclude Include="KeyBoard.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightController.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="pch.h" />

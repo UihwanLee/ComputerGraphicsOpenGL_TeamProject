@@ -25,6 +25,11 @@ void Scene02::Init()
 	camera.TurnTo(vec3(0.f, 0.f, 0.f)); // 카메라 방향
 	CameraController::GetInstance()->Init(&camera, KeyBoard::GetInstance());
 
+	// 조명 초기화
+	light.MoveTo(vec3(0.f, 0.0f, 5.f));	// 조명 위치
+	light.TurnTo(vec3(0.f, 0.f, 0.f)); // 조명 방향
+	LightController::GetInstance()->Init(&light, KeyBoard::GetInstance());
+
 	// 플레이어 생성
 	m_Player = new Player();
 
@@ -33,7 +38,7 @@ void Scene02::Init()
 
 	m_ObjectManager->CreateCube(highp_vec3(1.0f, 1.0f, 1.0f));
 	m_ObjectManager->SetScale(0, 10.0f, 0.2f, 10.0f);
-	m_ObjectManager->SetPosition(0, 0.0f, -1.5f, 0.0f);
+	m_ObjectManager->SetPosition(0, 0.0f, -4.5f, 0.0f);
 
 	m_ObjectManager->CreateCube(highp_vec3(1.0f, 1.0f, 0.0f));
 	m_ObjectManager->SetScale(1, 1.0, 1.0f, 1.0f);
@@ -82,11 +87,14 @@ void Scene02::DrawProjection()
 void Scene02::DrawPlayerLight()
 {
 	unsigned int lightPosLocation = glGetUniformLocation(m_shaderProgramID, "lightPos"); //--- lightPos 값 전달: (0.0, 0.0, 5.0);
-	glUniform3f(lightPosLocation, m_Player->m_LightPos.x, m_Player->m_LightPos.y, m_Player->m_LightPos.z);
+	glUniform3f(lightPosLocation, light.GetPosition().x, light.GetPosition().y, light.GetPosition().z);
 	unsigned int lightColorLocation = glGetUniformLocation(m_shaderProgramID, "lightColor"); //--- lightColor 값 전달: (1.0, 1.0, 1.0) 백색
-	glUniform3f(lightColorLocation, m_Player->m_LightColor.r, m_Player->m_LightColor.g, m_Player->m_LightColor.b);
+	glUniform3f(lightColorLocation, light.GetColor().r, light.GetColor().g, light.GetColor().b);
 	unsigned int viewPosLocation = glGetUniformLocation(m_shaderProgramID, "viewPos"); //--- viewPos 값 전달: 카메라 위치
-	glUniform3f(viewPosLocation, 0.0f, 0.0f, 0.0f);
+	glUniform3f(viewPosLocation, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
+
+	unsigned int lightTransform = glGetUniformLocation(m_shaderProgramID, "lightTransform");
+	glUniformMatrix4fv(lightTransform, 1, GL_FALSE, glm::value_ptr(light.GetViewMatrix()));
 }
 
 void Scene02::DrawObject(int DRAW_TYPE, glm::mat4& model, int idx)
