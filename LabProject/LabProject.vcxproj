@@ -168,6 +168,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene01.h" />
     <ClInclude Include="Scene02.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="cube.txt" />

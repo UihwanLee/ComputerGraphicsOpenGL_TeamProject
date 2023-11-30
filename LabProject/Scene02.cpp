@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Scene02.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 Scene02::Scene02(GLuint shaderProgramID)
 {
@@ -15,10 +17,11 @@ Scene02::~Scene02()
 void Scene02::Init()
 {
 	// VBO Gen
-	glGenBuffers(2, VBO);
+	glGenBuffers(3, VBO);
+	glGenTextures(1, &texture);
 
 	// 카메라 초기화
-	camera.MoveTo(vec3(0.f, 3.f, 5.f));	// 카메라 위치
+	camera.MoveTo(vec3(0.f, 0.0f, 5.f));	// 카메라 위치
 	camera.TurnTo(vec3(0.f, 0.f, 0.f)); // 카메라 방향
 	CameraController::GetInstance()->Init(&camera, KeyBoard::GetInstance());
 
@@ -28,13 +31,13 @@ void Scene02::Init()
 	// 오브젝트 생성
 	m_ObjectManager = new ObjectManager();
 
-	m_ObjectManager->CreateCube(highp_vec3(1.0f, 0.0f, 0.0f));
-	m_ObjectManager->SetScale(0, 100.0f, 0.2f, 100.0f);
-	m_ObjectManager->SetPosition(0, 0.0f, -0.5f, 0.0f);
+	m_ObjectManager->CreateCube(highp_vec3(1.0f, 1.0f, 1.0f));
+	m_ObjectManager->SetScale(0, 10.0f, 0.2f, 10.0f);
+	m_ObjectManager->SetPosition(0, 0.0f, -1.5f, 0.0f);
 
 	m_ObjectManager->CreateCube(highp_vec3(1.0f, 1.0f, 0.0f));
 	m_ObjectManager->SetScale(1, 1.0, 1.0f, 1.0f);
-	m_ObjectManager->SetPosition(1, 0.0f, 0.5f, 0.0f);
+	m_ObjectManager->SetPosition(1, 0.0f, 0.4f, 0.0f);
 
 }
 
@@ -108,11 +111,35 @@ void Scene02::DrawObject(int DRAW_TYPE, glm::mat4& model, int idx)
 	unsigned int objColorLocation = glGetUniformLocation(m_shaderProgramID, "objectColor"); //--- object Color값 전달 
 	glUniform3f(objColorLocation, m_ObjectManager->m_ObjectList[idx]->m_colors.r, m_ObjectManager->m_ObjectList[idx]->m_colors.g, m_ObjectManager->m_ObjectList[idx]->m_colors.b);
 
+	// vTexture
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, m_ObjectManager->m_ObjectList[idx]->m_uvs.size() * sizeof(glm::vec2), &m_ObjectManager->m_ObjectList[idx]->m_uvs[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), 0);
+
+	// Texture
+	int widthImage, heightImage, numberOfChannel;
+	// stbi_set_flip_vertically_on_load(true); //--- 이미지가 거꾸로 읽힌다면 추가
+	unsigned char* data = stbi_load("wall_texture.jfif", &widthImage, &heightImage, &numberOfChannel, 0);
+
+	unsigned int objTextureLocation = glGetUniformLocation(m_shaderProgramID, "outTexture");
+	glUniform1i(objTextureLocation, 0);
+
+	glActiveTexture(GL_TEXTURE0); //--- 유닛 0을 활성화
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, widthImage, heightImage, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
 	glDrawArrays(DRAW_TYPE, 0, m_ObjectManager->m_ObjectList[idx]->m_vertices.size());
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+	stbi_image_free(data);
 }
 
 void Scene02::DrawEndStage(float elapsedTime)

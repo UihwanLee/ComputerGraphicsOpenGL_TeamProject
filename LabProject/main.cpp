@@ -6,7 +6,7 @@
 
 Renderer* m_renderer = nullptr;
 
-float r{ 0.46666f }, g{ 0.533333f }, b{ 0.6f };
+float r{ 0.0 }, g{ 0.0 }, b{ 0.0f };
 
 DWORD g_startTime = 0;
 DWORD g_prevTime = 0;

@@ -24,7 +24,7 @@ void KeyBoard::KeyUp(char key)
 
 void KeyBoard::MouseDown(int button, int state, int x, int y)
 {
-	if (state == GLUT_DOWN && button == GLUT_RIGHT_BUTTON) {
+	if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON) {
 		KeyState& m_state = _states[button];
 		m_state = KeyState::PRESS;
 		_firstmousePos.x = x;
@@ -41,7 +41,7 @@ void KeyBoard::MouseDown(int button, int state, int x, int y)
 
 void KeyBoard::MouseMove(int x, int y)
 {
-	KeyState& m_state = _states[RIGHT_BUTTON];
+	KeyState& m_state = _states[LEFT_BUTTON];
 	if (m_state == KeyState::PRESS) {
 		_mousePos.x = x;
 		_mousePos.y = y;

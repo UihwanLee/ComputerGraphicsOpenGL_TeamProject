@@ -1,14 +1,16 @@
+#pragma once
 #include "pch.h"
 #include "ObjectManager.h"
 #include "Player.h"
 #include "CameraController.h"
 
-#pragma once
+
 class Scene02
 {
 private:
 	GLuint			m_shaderProgramID = 0;
-	GLuint			VBO[2];
+	GLuint			VBO[3];
+	GLuint			texture;
 
 	Camera camera;
 	Player*			m_Player;
