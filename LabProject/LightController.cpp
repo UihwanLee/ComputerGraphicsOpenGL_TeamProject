@@ -42,7 +42,7 @@ void LightController::Update(float elapsedTime)
 {
 	float move_speed = 10.f;
 
-	if (m_keyboard->Getbutton(KeyType::A)) {
+	/*if (m_keyboard->Getbutton(KeyType::A)) {
 		m_light->Move(m_light->GetRight(), -move_speed * elapsedTime);
 	}
 	if (m_keyboard->Getbutton(KeyType::D)) {
@@ -53,5 +53,5 @@ void LightController::Update(float elapsedTime)
 	}
 	if (m_keyboard->Getbutton(KeyType::S)) {
 		m_light->Move(m_light->GetForward(), -move_speed * elapsedTime);
-	}
+	}*/
 }

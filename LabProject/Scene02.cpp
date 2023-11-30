@@ -28,7 +28,9 @@ void Scene02::Init()
 	// 조명 초기화
 	light.MoveTo(vec3(0.f, 0.0f, 5.f));	// 조명 위치
 	light.TurnTo(vec3(0.f, 0.f, 0.f)); // 조명 방향
+
 	LightController::GetInstance()->Init(&light, KeyBoard::GetInstance());
+
 
 	// 플레이어 생성
 	m_Player = new Player();
@@ -93,8 +95,8 @@ void Scene02::DrawPlayerLight()
 	unsigned int viewPosLocation = glGetUniformLocation(m_shaderProgramID, "viewPos"); //--- viewPos 값 전달: 카메라 위치
 	glUniform3f(viewPosLocation, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
 
-	unsigned int lightTransform = glGetUniformLocation(m_shaderProgramID, "lightTransform");
-	glUniformMatrix4fv(lightTransform, 1, GL_FALSE, glm::value_ptr(light.GetViewMatrix()));
+	unsigned int lightTransform = glGetUniformLocation(m_shaderProgramID, "cameraTransform");
+	glUniformMatrix4fv(lightTransform, 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
 }
 
 void Scene02::DrawObject(int DRAW_TYPE, glm::mat4& model, int idx)
