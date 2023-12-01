@@ -26,6 +26,12 @@ enum class KeyState
 	END
 };
 
+enum ObjectType
+{
+	DEFAULT,
+	WALL
+};
+
 enum
 {
 	KEY_TYPE_COUNT = static_cast<int>(UINT8_MAX) + 1,

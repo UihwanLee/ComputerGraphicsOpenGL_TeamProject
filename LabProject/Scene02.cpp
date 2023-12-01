@@ -3,6 +3,14 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+vec3 pointLightPositions[5] = {
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(4.0f,  0.0f, 0.0f),
+		glm::vec3(-4.0f,  0.0f, 0.0f),
+		glm::vec3(5.0f,  0.0f, -20.0f),
+		glm::vec3(10.0f,  0.0f, -40.0f),
+};
+
 Scene02::Scene02(GLuint shaderProgramID)
 {
 	m_shaderProgramID = shaderProgramID;
@@ -45,7 +53,6 @@ void Scene02::Init()
 	m_ObjectManager->CreateCube(highp_vec3(1.0f, 1.0f, 0.0f));
 	m_ObjectManager->SetScale(1, 1.0, 1.0f, 1.0f);
 	m_ObjectManager->SetPosition(1, 0.0f, 0.4f, 0.0f);
-
 }
 
 void Scene02::Render(float elapsedTime)
@@ -97,6 +104,8 @@ void Scene02::DrawPlayerLight()
 
 	unsigned int lightTransform = glGetUniformLocation(m_shaderProgramID, "cameraTransform");
 	glUniformMatrix4fv(lightTransform, 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
+
+	glUniform3fv(glGetUniformLocation(m_shaderProgramID, "pointLightPos"), 5, value_ptr(pointLightPositions[0]));
 }
 
 void Scene02::DrawObject(int DRAW_TYPE, glm::mat4& model, int idx)
