@@ -7,13 +7,15 @@ vec3 pointLightPositions[5] = {
 		glm::vec3(0.0f,  0.0f, 0.0f),
 		glm::vec3(4.0f,  0.0f, 0.0f),
 		glm::vec3(-4.0f,  0.0f, 0.0f),
-		glm::vec3(5.0f,  0.0f, -20.0f),
-		glm::vec3(10.0f,  0.0f, -40.0f),
+		glm::vec3(0.0f,  0.0f, 7.0f),
+		glm::vec3(0.0f,  0.0f, 15.0f),
 };
 
 Scene02::Scene02(GLuint shaderProgramID)
 {
 	m_shaderProgramID = shaderProgramID;
+
+	idx = -1;
 }
 
 Scene02::~Scene02()
@@ -29,8 +31,8 @@ void Scene02::Init()
 	glGenTextures(1, &texture);
 
 	// 카메라 초기화
-	camera.MoveTo(vec3(0.f, 0.0f, 5.f));	// 카메라 위치
-	camera.TurnTo(vec3(0.f, 0.f, 0.f)); // 카메라 방향
+	camera.MoveTo(vec3(0.f, 0.0f, -3.f));	// 카메라 위치
+	camera.TurnTo(vec3(0.f, 0.f, 180.f)); // 카메라 방향
 	CameraController::GetInstance()->Init(&camera, KeyBoard::GetInstance());
 
 	// 조명 초기화
@@ -46,13 +48,67 @@ void Scene02::Init()
 	// 오브젝트 생성
 	m_ObjectManager = new ObjectManager();
 
-	m_ObjectManager->CreateCube(highp_vec3(1.0f, 1.0f, 1.0f));
-	m_ObjectManager->SetScale(0, 10.0f, 0.2f, 10.0f);
-	m_ObjectManager->SetPosition(0, 0.0f, -4.5f, 0.0f);
+	// 맵 생성
+	InitMap();
 
-	m_ObjectManager->CreateCube(highp_vec3(1.0f, 1.0f, 0.0f));
-	m_ObjectManager->SetScale(1, 1.0, 1.0f, 1.0f);
-	m_ObjectManager->SetPosition(1, 0.0f, 0.4f, 0.0f);
+	// 오브젝트 생성
+	InitObject();
+}
+
+void Scene02::InitMap()
+{
+	ObjectType type = ObjectType::WALL;
+
+	float wall_bottom_y = -4.5f;
+	float wall_side_y = 0.3f;
+
+	// 앞면 뒷면   -> (x, y, 0.2f)
+	// 옆면		   -> (0.2f, y, z)
+	// 윗면 아랫면 -> (x, 0.2f, z)
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 15.0f, 0.2f, 15.0f);
+	m_ObjectManager->SetPosition(idx, 0.0f, wall_bottom_y, 0.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 15.0f, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 0.0f, wall_side_y, -37.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 5.0f, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 1.0f, wall_side_y, 37.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 5.0f, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, -1.0f, wall_side_y, 37.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
+	m_ObjectManager->SetPosition(idx, -37.0f, wall_side_y, 0.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
+	m_ObjectManager->SetPosition(idx, 37.0f, wall_side_y, 0.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 5.0f, 0.2f, 15.0f);
+	m_ObjectManager->SetPosition(idx, 0.0f, wall_bottom_y, 1.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
+	m_ObjectManager->SetPosition(idx, 12.0f, wall_side_y, 1.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
+	m_ObjectManager->SetPosition(idx, -12.0f, wall_side_y, 1.0f);
+
+}
+
+void Scene02::InitObject()
+{
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 0.0f), ObjectType::DEFAULT);
+	m_ObjectManager->SetScale(idx, 1.0, 1.0f, 1.0f);
+	m_ObjectManager->SetPosition(idx, 0.0f, 0.4f, 0.0f);
 }
 
 void Scene02::Render(float elapsedTime)
@@ -138,9 +194,31 @@ void Scene02::DrawObject(int DRAW_TYPE, glm::mat4& model, int idx)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), 0);
 
 	// Texture
+	TextureMapping(m_ObjectManager->m_ObjectList[idx]->m_type);
+
+	glDrawArrays(DRAW_TYPE, 0, m_ObjectManager->m_ObjectList[idx]->m_vertices.size());
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+	stbi_image_free(m_texture);
+}
+
+void Scene02::TextureMapping(ObjectType type)
+{
+	// Texture
 	int widthImage, heightImage, numberOfChannel;
 	// stbi_set_flip_vertically_on_load(true); //--- 이미지가 거꾸로 읽힌다면 추가
-	unsigned char* data = stbi_load("wall_texture.jfif", &widthImage, &heightImage, &numberOfChannel, 0);
+
+	if (type == ObjectType::WALL)
+	{
+		m_texture = stbi_load("wall_texture.jfif", &widthImage, &heightImage, &numberOfChannel, 0);
+	}
+	else
+	{
+		m_texture = stbi_load("white.png", &widthImage, &heightImage, &numberOfChannel, 0);
+	}
+
 
 	unsigned int objTextureLocation = glGetUniformLocation(m_shaderProgramID, "outTexture");
 	glUniform1i(objTextureLocation, 0);
@@ -151,14 +229,7 @@ void Scene02::DrawObject(int DRAW_TYPE, glm::mat4& model, int idx)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, widthImage, heightImage, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-
-	glDrawArrays(DRAW_TYPE, 0, m_ObjectManager->m_ObjectList[idx]->m_vertices.size());
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-	stbi_image_free(data);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, widthImage, heightImage, 0, GL_RGB, GL_UNSIGNED_BYTE, m_texture);
 }
 
 void Scene02::DrawEndStage(float elapsedTime)

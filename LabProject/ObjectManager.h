@@ -15,8 +15,8 @@ public:
 	GLfloat GetRandomFloatValue(GLfloat min, GLfloat max);
 
 	void CreateFigure(Object* gameObject, highp_vec3 color);
-	void CreateCube(highp_vec3 color);
-	void CreateSqhere(highp_vec3 color);
+	void CreateCube(int* idx, highp_vec3 color, ObjectType type);
+	void CreateSqhere(int* idx, highp_vec3 color, ObjectType type);
 
 	void SetPosition(int idx, float x, float y, float z);
 	void SetRotate(int idx, float x, float y, float z);

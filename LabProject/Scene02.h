@@ -18,11 +18,18 @@ private:
 	Player*			m_Player;
 	ObjectManager*	m_ObjectManager;
 
+	unsigned char*	m_texture;
+
+	int				idx;
+
 public:
 	Scene02(GLuint shaderProgramID);
 	~Scene02();
 
 	void Init();
+	void InitMap();
+	void InitObject();
+
 	void Render(float elapsedTime);
 	void Update(float elapsedTime);
 
@@ -34,5 +41,7 @@ private:
 	void DrawObject(int DRAW_TYPE, glm::mat4& model, int idx);
 	void DrawEndStage(float elapsedTime);
 	void DrawStage2(float elapsedTime);
+
+	void TextureMapping(ObjectType type);
 };
 

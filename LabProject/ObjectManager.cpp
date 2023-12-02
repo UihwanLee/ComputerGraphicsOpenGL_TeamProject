@@ -74,17 +74,21 @@ void ObjectManager::CreateFigure(Object* gameObject, highp_vec3 color)
 	m_ObjectList.emplace_back(gameObject);
 }
 
-void ObjectManager::CreateCube(highp_vec3 color)
+void ObjectManager::CreateCube(int* idx, highp_vec3 color, ObjectType type)
 {
+	*idx += 1;
+
 	Object* gameObject = new Object();
 
 	gameObject->LoadMeshInfoFromFile("cube.txt");
+	gameObject->m_type = type;
 
 	CreateFigure(gameObject, color);
 }
 
-void ObjectManager::CreateSqhere(highp_vec3 color)
+void ObjectManager::CreateSqhere(int* idx, highp_vec3 color, ObjectType type)
 {
+	*idx += 1;
 }
 
 void ObjectManager::SetPosition(int idx, float x, float y, float z)

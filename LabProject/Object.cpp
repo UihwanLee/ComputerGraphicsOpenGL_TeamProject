@@ -8,6 +8,9 @@ Object::Object()
 	m_scale.x = 1.0f; m_scale.y = 1.0f; m_scale.z = 1.0f;
 
 	m_model = glm::mat4(1.0f);
+
+	m_type = ObjectType::DEFAULT;
+
 	m_bActive = true;
 }
 

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Enums.h"
 
 #pragma once
 class Object
@@ -24,6 +25,8 @@ public:
 	glm::mat4				m_model;
 	
 	bool					m_bActive;
+
+	ObjectType				m_type;
 
 public:
 	Object();
