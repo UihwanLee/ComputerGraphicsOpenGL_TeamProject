@@ -8,10 +8,6 @@
 
 class Renderer
 {
-private:
-	Scene01			*m_Scene01 = NULL;
-	Scene02			*m_Scene02 = NULL;
-
 public:
 	Renderer(int windowSizeX, int windowSizeY);
 	~Renderer();
@@ -22,6 +18,8 @@ public:
 
 	void DrawAll(float elapsedTime);
 	void UpdateAll(float elapsefTime);
+
+	GLuint GetShaderProgramID() { return shaderProgramID; }
 
 private:
 	void Initialize(int windowSizeX, int windowSizeY);

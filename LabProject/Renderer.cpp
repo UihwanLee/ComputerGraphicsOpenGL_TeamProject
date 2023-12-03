@@ -34,13 +34,6 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	{
 		m_Initialized = true;
 	}
-
-	// 씬 생성
-	m_Scene01 = new Scene01(shaderProgramID);
-	m_Scene02 = new Scene02(shaderProgramID);
-
-	m_Scene01->Init();
-	m_Scene02->Init();
 }
 
 bool Renderer::ReadFile(const char* filename, std::string* target)
@@ -168,15 +161,14 @@ void Renderer::DrawAll(float elapsedTime)
 	// Player는 항상 Render
 
 	// m_Scene01 수행이 끝났으면 (STAGE1 클리어 시) m_Scene02 Render 
-	m_Scene01->Render(elapsedTime);
-	m_Scene02->Render(elapsedTime);
+	/*m_Scene01->Render(elapsedTime);
+	m_Scene02->Render(elapsedTime);*/
 }
 
 void Renderer::UpdateAll(float elapsefTime)
 {
-	CameraController::GetInstance()->Update(elapsefTime);
-	LightController::GetInstance()->Update(elapsefTime);
+	/*CameraController::GetInstance()->Update(elapsefTime);
 
 	m_Scene01->Update(elapsefTime);
-	m_Scene02->Update(elapsefTime);
+	m_Scene02->Update(elapsefTime);*/
 }

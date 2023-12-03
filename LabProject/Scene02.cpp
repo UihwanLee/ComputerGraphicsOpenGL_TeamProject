@@ -11,9 +11,16 @@ vec3 pointLightPositions[5] = {
 		glm::vec3(0.0f,  0.0f, 15.0f),
 };
 
-Scene02::Scene02(GLuint shaderProgramID)
+Scene02::Scene02(CameraController* cameracontroller)
 {
-	m_shaderProgramID = shaderProgramID;
+	m_Renderer = new Renderer(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	m_ObjectManager = new ObjectManager(m_Renderer->GetShaderProgramID());
+
+	m_shaderProgramID = m_Renderer->GetShaderProgramID();
+
+	m_cameraController = cameracontroller;
+	m_cameraController->Init(vec3(0.f, 0.0f, -3.f), vec3(0.f, 0.f, 180.f));
 
 	idx = -1;
 }
@@ -22,6 +29,12 @@ Scene02::~Scene02()
 {
 	delete m_Player;
 	delete m_ObjectManager;
+
+	delete m_Renderer;
+	m_Renderer = nullptr;
+
+	delete m_ObjectManager;
+	m_ObjectManager = nullptr;
 }
 
 void Scene02::Init()
@@ -30,23 +43,8 @@ void Scene02::Init()
 	glGenBuffers(3, VBO);
 	glGenTextures(1, &texture);
 
-	// 카메라 초기화
-	camera.MoveTo(vec3(0.f, 0.0f, -3.f));	// 카메라 위치
-	camera.TurnTo(vec3(0.f, 0.f, 180.f)); // 카메라 방향
-	CameraController::GetInstance()->Init(&camera, KeyBoard::GetInstance());
-
-	// 조명 초기화
-	light.MoveTo(vec3(0.f, 0.0f, 5.f));	// 조명 위치
-	light.TurnTo(vec3(0.f, 0.f, 0.f)); // 조명 방향
-
-	LightController::GetInstance()->Init(&light, KeyBoard::GetInstance());
-
-
 	// 플레이어 생성
 	m_Player = new Player();
-
-	// 오브젝트 생성
-	m_ObjectManager = new ObjectManager();
 
 	// 맵 생성
 	InitMap();
@@ -111,26 +109,27 @@ void Scene02::InitObject()
 	m_ObjectManager->SetPosition(idx, 0.0f, 0.4f, 0.0f);
 }
 
-void Scene02::Render(float elapsedTime)
+void Scene02::Render()
 {
 	DrawView();
 	DrawProjection();
 	DrawPlayerLight();
 
-	DrawStage2(elapsedTime);
-	DrawEndStage(elapsedTime);
+	DrawStage2();
+	DrawEndStage();
 }
 
 void Scene02::Update(float elapsedTime)
 {
 	m_Player->Update(elapsedTime);
+	m_cameraController->Update(elapsedTime);
 }
 
 void Scene02::DrawView()
 {
 	unsigned int viewLocation = glGetUniformLocation(m_shaderProgramID, "viewTransform");
 
-	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
+	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_cameraController->GetViewMatrix()));
 }
 
 void Scene02::DrawProjection()
@@ -151,10 +150,6 @@ void Scene02::DrawProjection()
 
 void Scene02::DrawPlayerLight()
 {
-	unsigned int lightPosLocation = glGetUniformLocation(m_shaderProgramID, "lightPos"); //--- lightPos 값 전달: (0.0, 0.0, 5.0);
-	glUniform3f(lightPosLocation, light.GetPosition().x, light.GetPosition().y, light.GetPosition().z);
-	unsigned int lightColorLocation = glGetUniformLocation(m_shaderProgramID, "lightColor"); //--- lightColor 값 전달: (1.0, 1.0, 1.0) 백색
-	glUniform3f(lightColorLocation, light.GetColor().r, light.GetColor().g, light.GetColor().b);
 	unsigned int viewPosLocation = glGetUniformLocation(m_shaderProgramID, "viewPos"); //--- viewPos 값 전달: 카메라 위치
 	glUniform3f(viewPosLocation, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
 
@@ -232,11 +227,11 @@ void Scene02::TextureMapping(ObjectType type)
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, widthImage, heightImage, 0, GL_RGB, GL_UNSIGNED_BYTE, m_texture);
 }
 
-void Scene02::DrawEndStage(float elapsedTime)
+void Scene02::DrawEndStage()
 {
 }
 
-void Scene02::DrawStage2(float elapsedTime)
+void Scene02::DrawStage2()
 {
 	for (int i = 0; i < m_ObjectManager->m_ObjectList.size(); i++)
 	{

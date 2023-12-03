@@ -3,7 +3,7 @@
 #include "ObjectManager.h"
 #include "Player.h"
 #include "CameraController.h"
-#include "LightController.h"
+#include "Renderer.h"
 
 
 class Scene02
@@ -14,8 +14,11 @@ private:
 	GLuint			texture;
 
 	Camera			camera;
-	Light			light;
 	Player*			m_Player;
+	Renderer*		m_Renderer;
+
+	CameraController* m_cameraController;
+
 	ObjectManager*	m_ObjectManager;
 
 	unsigned char*	m_texture;
@@ -23,14 +26,14 @@ private:
 	int				idx;
 
 public:
-	Scene02(GLuint shaderProgramID);
+	Scene02(CameraController*);
 	~Scene02();
 
 	void Init();
 	void InitMap();
 	void InitObject();
 
-	void Render(float elapsedTime);
+	void Render();
 	void Update(float elapsedTime);
 
 private:
@@ -39,8 +42,8 @@ private:
 	void DrawPlayerLight();
 
 	void DrawObject(int DRAW_TYPE, glm::mat4& model, int idx);
-	void DrawEndStage(float elapsedTime);
-	void DrawStage2(float elapsedTime);
+	void DrawEndStage();
+	void DrawStage2();
 
 	void TextureMapping(ObjectType type);
 };

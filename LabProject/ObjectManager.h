@@ -6,9 +6,10 @@ class ObjectManager
 {
 public:
 	vector<Object*>	m_ObjectList;
+	GLuint			m_shaderProgramID = 0;
 
 public:
-	ObjectManager();
+	ObjectManager(GLuint shaderProgramID);
 	~ObjectManager();
 
 	int GetRandomIntValue(GLfloat min, GLfloat max);
@@ -29,5 +30,6 @@ public:
 
 	// ÁÂÇ¥°è º¯È­
 	glm::mat4 TransformModel(int idx);
+
 };
 

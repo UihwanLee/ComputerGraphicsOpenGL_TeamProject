@@ -4,8 +4,10 @@
 #include "KeyBoard.h"
 #include "CameraController.h"
 #include "LightController.h"
+#include "Game.h"
 
-Renderer* m_renderer = nullptr;
+Game* m_game = nullptr;
+CameraController* m_cameraController = nullptr;
 
 float r{ 0.0 }, g{ 0.0 }, b{ 0.0f };
 
@@ -36,8 +38,8 @@ GLvoid drawScene()
 
 
 	// Renderer 
-	m_renderer->UpdateAll(elapsedTimeInSec);
-	m_renderer->DrawAll(elapsedTimeInSec);
+	m_game->UpdateAll(elapsedTimeInSec);
+	m_game->DrawAll();
 
 	glutSwapBuffers();
 }
@@ -50,27 +52,22 @@ void Idle()
 
 void MouseInput(int button, int state, int x, int y)
 {
-	KeyBoard::GetInstance()->MouseDown(button, state, x, y);
-	CameraController::GetInstance()->MouseDown(button);
-	LightController::GetInstance()->MouseDown(button);
+	m_cameraController->MouseDown(button, state, x, y);
 }
 
 void MouseMove(int x, int y)
 {
-	KeyBoard::GetInstance()->MouseMove(x, y);
-	CameraController::GetInstance()->MouseMove();
-	LightController::GetInstance()->MouseMove();
+	m_cameraController->MouseMove(x, y);
 }
 
 void KeyDownInput(unsigned char key, int x, int y)
 {
-	KeyBoard::GetInstance()->KeyDown(key);
+	m_cameraController->KeyDown(key);
 }
 
 void KeyUpInput(unsigned char key, int x, int y)
 {
-	KeyBoard::GetInstance()->KeyUp(key);
-
+	m_cameraController->KeyUp(key);
 }
 
 void SpecialKeyDownInput(int id, int x, int y)
@@ -105,7 +102,8 @@ int main(int argc, char** argv)
 	glEnable(GL_DEPTH_TEST);
 
 	// Initialize Renderer	
-	m_renderer = new Renderer(WINDOW_WIDTH, WINDOW_HEIGHT);
+	m_cameraController = new CameraController();
+	m_game = new Game(m_cameraController);
 
 
 	glutDisplayFunc(drawScene);
@@ -132,5 +130,5 @@ int main(int argc, char** argv)
 
 	glutMainLoop();
 
-	delete m_renderer;
+	delete m_game;
 }

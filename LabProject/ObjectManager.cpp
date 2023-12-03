@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "ObjectManager.h"
 
-ObjectManager::ObjectManager()
+ObjectManager::ObjectManager(GLuint shaderProgramID)
 {
+	m_shaderProgramID = shaderProgramID;
 	m_ObjectList.clear();
 }
 
@@ -175,6 +176,10 @@ glm::mat4 ObjectManager::TransformModel(int idx)
 		model = glm::translate(model, glm::vec3(move_x, move_y, move_z));
 
 		// IDX에 따라 Transform을 달리 해준다.
+
+		// Picking 상태이면 Camera Transform을 따라감
+
+		// glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
 	}
 
 	return model;

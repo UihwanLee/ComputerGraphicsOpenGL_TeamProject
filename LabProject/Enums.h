@@ -32,6 +32,15 @@ enum ObjectType
 	WALL
 };
 
+enum class SceneType
+{
+	NONE,
+	Scene1,
+	Scene2,
+	End,
+};
+
+
 enum
 {
 	KEY_TYPE_COUNT = static_cast<int>(UINT8_MAX) + 1,
