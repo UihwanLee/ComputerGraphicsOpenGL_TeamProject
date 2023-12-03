@@ -44,7 +44,7 @@ void Scene02::Init()
 	glGenTextures(1, &texture);
 
 	// 플레이어 생성
-	m_Player = new Player();
+	m_Player = new Player(m_shaderProgramID, m_cameraController);
 
 	// 맵 생성
 	InitMap();
@@ -113,7 +113,7 @@ void Scene02::Render()
 {
 	DrawView();
 	DrawProjection();
-	DrawPlayerLight();
+	DrawLight();
 
 	DrawStage2();
 	DrawEndStage();
@@ -148,13 +148,9 @@ void Scene02::DrawProjection()
 	glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, &projection[0][0]);		// 투영변환
 }
 
-void Scene02::DrawPlayerLight()
+void Scene02::DrawLight()
 {
-	unsigned int viewPosLocation = glGetUniformLocation(m_shaderProgramID, "viewPos"); //--- viewPos 값 전달: 카메라 위치
-	glUniform3f(viewPosLocation, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
-
-	unsigned int lightTransform = glGetUniformLocation(m_shaderProgramID, "cameraTransform");
-	glUniformMatrix4fv(lightTransform, 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
+	m_Player->DrawPlayerLight();
 
 	glUniform3fv(glGetUniformLocation(m_shaderProgramID, "pointLightPos"), 5, value_ptr(pointLightPositions[0]));
 }

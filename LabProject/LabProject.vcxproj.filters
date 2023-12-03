@@ -78,6 +78,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex.glsl">
@@ -132,6 +135,9 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

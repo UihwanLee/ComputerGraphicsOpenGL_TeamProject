@@ -7,6 +7,8 @@ CameraController::CameraController()
 
 	m_keyboard = new KeyBoard();
 	m_keyboard->Init();
+
+	m_light = new Light();
 }
 
 CameraController::~CameraController()
@@ -22,6 +24,10 @@ void CameraController::Init(vec3 move, vec3 turn)
 {
 	m_camera->MoveTo(move);
 	m_camera->TurnTo(turn);
+
+	m_light->SetLightPos(move);
+	m_light->SetLightColor(vec3(1.0f, 1.0f, 1.0f));
+	m_light->SetView(m_camera->GetPosition());
 }
 
 void CameraController::KeyDown(unsigned char key)
@@ -59,6 +65,7 @@ void CameraController::MouseMove(int x, int y)
 	if (mMouseControl) {
 		m_camera->Yaw(deltaPos.x * cameraRotSpeed);
 		m_camera->Pitch(deltaPos.y * cameraRotSpeed);
+		m_light->SetLightPos(m_camera->GetPosition());
 	}
 
 	m_keyboard->GetFirstMousePos().x = m_keyboard->GetMousePos().x;
@@ -81,6 +88,7 @@ void CameraController::Update(float elapsedTime)
 	if (m_keyboard->Getbutton(KeyType::S)) {
 		m_camera->Move(m_camera->GetForward(), -move_speed * elapsedTime);
 	}
+	m_light->SetLightPos(m_camera->GetPosition());
 }
 
 mat4 CameraController::GetViewMatrix()
@@ -91,4 +99,15 @@ mat4 CameraController::GetViewMatrix()
 vec3 CameraController::GetCameraFront()
 {
 	return m_camera->GetForward();
+}
+
+void CameraController::SetView()
+{
+
+}
+
+Light* CameraController::GetLight()
+{
+	m_light->SetView(m_camera->GetPosition());
+	return m_light;
 }

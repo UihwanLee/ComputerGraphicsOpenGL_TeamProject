@@ -1,6 +1,7 @@
 #pragma once
 #include "KeyBoard.h"
 #include "Camera.h"
+#include "Light.h"
 
 class CameraController
 {
@@ -23,8 +24,13 @@ public:
 	mat4 GetViewMatrix();
 	vec3 GetCameraFront();
 
+	void SetView();
+	Light* GetLight();
+
 private:
 	Camera* m_camera;
 	KeyBoard* m_keyboard;
+	Light* m_light;
+
 	bool mMouseControl;
 };

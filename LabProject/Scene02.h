@@ -39,7 +39,7 @@ public:
 private:
 	void DrawView();
 	void DrawProjection();
-	void DrawPlayerLight();
+	void DrawLight();
 
 	void DrawObject(int DRAW_TYPE, glm::mat4& model, int idx);
 	void DrawEndStage();
