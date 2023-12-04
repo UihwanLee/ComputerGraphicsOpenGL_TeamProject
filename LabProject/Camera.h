@@ -12,6 +12,7 @@ public:
 	mat4 GetViewMatrix();
 	mat4 GetRotationMatrix();
 
+	vec3 TryMove(vec3 direction, float amount);
 	void Move(vec3 direction, float amount);
 	void Yaw(float angle);
 	void Pitch(float angle);

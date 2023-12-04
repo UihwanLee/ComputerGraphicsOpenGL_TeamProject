@@ -18,6 +18,9 @@ CameraController::~CameraController()
 
 	delete m_keyboard;
 	m_keyboard = nullptr;
+
+	delete m_light;
+	m_light = nullptr;
 }
 
 void CameraController::Init(vec3 move, vec3 turn)
@@ -74,21 +77,67 @@ void CameraController::MouseMove(int x, int y)
 
 void CameraController::Update(float elapsedTime)
 {
-	float move_speed = 10.f;
-
-	if (m_keyboard->Getbutton(KeyType::A)) {
-		m_camera->Move(m_camera->GetRight(), -move_speed * elapsedTime);
-	}
-	if (m_keyboard->Getbutton(KeyType::D)) {
-		m_camera->Move(m_camera->GetRight(), move_speed * elapsedTime);
-	}
-	if (m_keyboard->Getbutton(KeyType::W)) {
-		m_camera->Move(m_camera->GetForward(), move_speed * elapsedTime);
-	}
-	if (m_keyboard->Getbutton(KeyType::S)) {
-		m_camera->Move(m_camera->GetForward(), -move_speed * elapsedTime);
-	}
 	m_light->SetLightPos(m_camera->GetPosition());
+}
+
+bool CameraController::InputKeyW()
+{
+	return m_keyboard->Getbutton(KeyType::W);
+}
+
+bool CameraController::InputKeyA()
+{
+	return m_keyboard->Getbutton(KeyType::A);
+}
+
+bool CameraController::InputKeyS()
+{
+	return m_keyboard->Getbutton(KeyType::S);
+}
+
+bool CameraController::InputKeyD()
+{
+	return m_keyboard->Getbutton(KeyType::D);
+}
+
+vec3 CameraController::TryMoveFront(float elapsedTime)
+{
+	return m_camera->TryMove(m_camera->GetForward(), move_speed * elapsedTime);
+}
+
+vec3 CameraController::TryMoveBack(float elapsedTime)
+{
+	return m_camera->TryMove(m_camera->GetForward(), -move_speed * elapsedTime);
+}
+
+vec3 CameraController::TryMoveRight(float elapsedTime)
+{
+	return m_camera->TryMove(m_camera->GetRight(), move_speed * elapsedTime);
+}
+
+vec3 CameraController::TryMoveLeft(float elapsedTime)
+{
+	return m_camera->TryMove(m_camera->GetRight(), -move_speed * elapsedTime);
+}
+
+void CameraController::MoveFront(float elapsedTime)
+{
+	m_camera->Move(m_camera->GetForward(), move_speed * elapsedTime);
+}
+
+void CameraController::MoveBack(float elapsedTime)
+{
+	m_camera->Move(m_camera->GetForward(), -move_speed * elapsedTime);
+}
+
+void CameraController::MoveRight(float elapsedTime)
+{
+	m_camera->Move(m_camera->GetRight(), move_speed * elapsedTime);
+}
+
+void CameraController::MoveLeft(float elapsedTime)
+{
+	m_camera->Move(m_camera->GetRight(), -move_speed * elapsedTime);
 }
 
 mat4 CameraController::GetViewMatrix()
@@ -101,6 +150,11 @@ vec3 CameraController::GetCameraFront()
 	return m_camera->GetForward();
 }
 
+vec3 CameraController::GetPosition()
+{
+	return m_camera->GetPosition();
+}
+
 void CameraController::SetView()
 {
 
@@ -111,3 +165,4 @@ Light* CameraController::GetLight()
 	m_light->SetView(m_camera->GetPosition());
 	return m_light;
 }
+

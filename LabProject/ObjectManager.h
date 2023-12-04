@@ -1,7 +1,9 @@
+#pragma once
+
 #include "pch.h"
 #include "Object.h"
+#include "Player.h"
 
-#pragma once
 class ObjectManager
 {
 public:

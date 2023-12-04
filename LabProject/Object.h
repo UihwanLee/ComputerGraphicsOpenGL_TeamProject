@@ -41,5 +41,8 @@ public:
 	void Rotate(float x, float y, float z);
 	void Scale(float x, float y, float z);
 
+	void GetBBMin(float* x, float* y, float* z);
+	void GetBBMax(float* x, float* y, float* z);
+
 	bool LoadMeshInfoFromFile(const char* file_name);
 };

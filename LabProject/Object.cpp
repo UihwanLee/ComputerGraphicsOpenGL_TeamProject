@@ -67,6 +67,21 @@ void Object::Scale(float x, float y, float z)
 	m_scale.z += z;
 }
 
+void Object::GetBBMin(float* x, float* y, float* z)
+{
+	*x = m_position.x - m_scale.x / 2.f;
+	*y = m_position.y - m_scale.y / 2.f;
+	*z = m_position.z - m_scale.z / 2.f;
+}
+
+void Object::GetBBMax(float* x, float* y, float* z)
+{
+	*x = m_position.x + m_scale.x / 2.f;
+	*y = m_position.y + m_scale.y / 2.f;
+	*z = m_position.z + m_scale.z / 2.f;
+}
+
+
 bool Object::LoadMeshInfoFromFile(const char* file_name)
 {
 	char bind[128];

@@ -28,13 +28,25 @@ Scene02::Scene02(CameraController* cameracontroller)
 Scene02::~Scene02()
 {
 	delete m_Player;
+	m_Player = nullptr;
+
+	for (int i = 0; i < m_ObjectManager->m_ObjectList.size(); i++)
+	{
+		delete m_ObjectManager->m_ObjectList[i];
+		m_ObjectManager->m_ObjectList[i] = nullptr;
+	}
+
 	delete m_ObjectManager;
+	m_ObjectManager = nullptr;
 
 	delete m_Renderer;
 	m_Renderer = nullptr;
 
 	delete m_ObjectManager;
 	m_ObjectManager = nullptr;
+
+	delete m_texture;
+	m_texture = nullptr;
 }
 
 void Scene02::Init()
@@ -44,7 +56,11 @@ void Scene02::Init()
 	glGenTextures(1, &texture);
 
 	// 플레이어 생성
-	m_Player = new Player(m_shaderProgramID, m_cameraController);
+	m_Player = new Player(m_shaderProgramID, m_cameraController, vec3(1.0f, 0.1f, 1.0f));
+
+	m_Physics = new Physics(m_Player, m_ObjectManager);
+
+	// m_cameraController->SetPhysics(m_Physics);
 
 	// 맵 생성
 	InitMap();
@@ -57,7 +73,7 @@ void Scene02::InitMap()
 {
 	ObjectType type = ObjectType::WALL;
 
-	float wall_bottom_y = -4.5f;
+	float wall_bottom_y = -1.0f;
 	float wall_side_y = 0.3f;
 
 	// 앞면 뒷면   -> (x, y, 0.2f)
@@ -70,35 +86,35 @@ void Scene02::InitMap()
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 15.0f, 5.0f, 0.2f);
-	m_ObjectManager->SetPosition(idx, 0.0f, wall_side_y, -37.0f);
+	m_ObjectManager->SetPosition(idx, 0.0f, wall_side_y, -7.5f);
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 5.0f, 5.0f, 0.2f);
-	m_ObjectManager->SetPosition(idx, 1.0f, wall_side_y, 37.0f);
+	m_ObjectManager->SetPosition(idx, 5.0f, wall_side_y, 7.5f);
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 5.0f, 5.0f, 0.2f);
-	m_ObjectManager->SetPosition(idx, -1.0f, wall_side_y, 37.0f);
+	m_ObjectManager->SetPosition(idx, -5.0f, wall_side_y, 7.5f);
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
-	m_ObjectManager->SetPosition(idx, -37.0f, wall_side_y, 0.0f);
+	m_ObjectManager->SetPosition(idx, -7.5f, wall_side_y, 0.0f);
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
-	m_ObjectManager->SetPosition(idx, 37.0f, wall_side_y, 0.0f);
+	m_ObjectManager->SetPosition(idx, 7.5f, wall_side_y, 0.0f);
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 5.0f, 0.2f, 15.0f);
-	m_ObjectManager->SetPosition(idx, 0.0f, wall_bottom_y, 1.0f);
+	m_ObjectManager->SetPosition(idx, 0.0f, wall_bottom_y, 15.0f);
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
-	m_ObjectManager->SetPosition(idx, 12.0f, wall_side_y, 1.0f);
+	m_ObjectManager->SetPosition(idx, 3.0f, wall_side_y, 15.0f);
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
-	m_ObjectManager->SetPosition(idx, -12.0f, wall_side_y, 1.0f);
+	m_ObjectManager->SetPosition(idx, -3.0f, wall_side_y, 15.0f);
 
 }
 
@@ -122,7 +138,44 @@ void Scene02::Render()
 void Scene02::Update(float elapsedTime)
 {
 	m_Player->Update(elapsedTime);
-	m_cameraController->Update(elapsedTime);
+	InputKey(elapsedTime);
+}
+
+bool Scene02::CheckCollisionPlayerByWall(vec3 movePos)
+{
+	return m_Physics->CheckCollisionPlayerByWall(movePos);
+}
+
+void Scene02::InputKey(float elapsedTime)
+{
+	if (m_cameraController->InputKeyW())
+	{
+		if (m_Physics->CheckCollisionPlayerByWall(m_cameraController->TryMoveFront(elapsedTime)))
+		{
+			m_cameraController->MoveFront(elapsedTime);
+		}
+	}
+	if (m_cameraController->InputKeyS())
+	{
+		if (m_Physics->CheckCollisionPlayerByWall(m_cameraController->TryMoveBack(elapsedTime)))
+		{
+			m_cameraController->MoveBack(elapsedTime);
+		}
+	}
+	if (m_cameraController->InputKeyA())
+	{
+		if (m_Physics->CheckCollisionPlayerByWall(m_cameraController->TryMoveLeft(elapsedTime)))
+		{
+			m_cameraController->MoveLeft(elapsedTime);
+		}
+	}
+	if (m_cameraController->InputKeyD())
+	{
+		if (m_Physics->CheckCollisionPlayerByWall(m_cameraController->TryMoveRight(elapsedTime)))
+		{
+			m_cameraController->MoveRight(elapsedTime);
+		}
+	}
 }
 
 void Scene02::DrawView()

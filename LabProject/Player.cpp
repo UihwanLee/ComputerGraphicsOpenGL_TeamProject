@@ -15,10 +15,13 @@ float lastY = 0.0f;
 float f_yaw = 0.0f;
 float f_pitch = 0.0f;
 
-Player::Player(GLuint shaderProgramID, CameraController* cameracontroller)
+Player::Player(GLuint shaderProgramID, CameraController* cameracontroller, vec3 scale)
 {
 	m_shaderProgramID = shaderProgramID;
 	m_cameraController = cameracontroller;
+	m_scale = scale;
+
+	m_isMove = true;
 }
 
 Player::~Player()
@@ -28,7 +31,10 @@ Player::~Player()
 
 void Player::Update(float elapsedTime)
 {
-
+	if (m_isMove)
+	{
+		m_cameraController->Update(elapsedTime);
+	}
 }
 
 void Player::Render(float elapsedTime)

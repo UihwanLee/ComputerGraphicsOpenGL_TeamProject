@@ -1,4 +1,5 @@
 #pragma once
+
 #include "KeyBoard.h"
 #include "Camera.h"
 #include "Light.h"
@@ -21,16 +22,36 @@ public:
 	void Update(float elapsedTime);
 
 public:
+	bool InputKeyW();
+	bool InputKeyA();
+	bool InputKeyS();
+	bool InputKeyD();
+
+	vec3 TryMoveFront(float elapsedTime);
+	vec3 TryMoveBack(float elapsedTime);
+	vec3 TryMoveRight(float elapsedTime);
+	vec3 TryMoveLeft(float elapsedTime);
+
+	void MoveFront(float elapsedTime);
+	void MoveBack(float elapsedTime);
+	void MoveRight(float elapsedTime);
+	void MoveLeft(float elapsedTime);
+
+public:
 	mat4 GetViewMatrix();
 	vec3 GetCameraFront();
+
+	vec3 GetPosition();
 
 	void SetView();
 	Light* GetLight();
 
 private:
-	Camera* m_camera;
-	KeyBoard* m_keyboard;
-	Light* m_light;
+	float		move_speed = 10.f;
+
+	Camera*		m_camera;
+	KeyBoard*	m_keyboard;
+	Light*		m_light;
 
 	bool mMouseControl;
 };

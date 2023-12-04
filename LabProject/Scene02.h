@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "CameraController.h"
 #include "Renderer.h"
+#include "Physics.h"
 
 
 class Scene02
@@ -14,12 +15,16 @@ private:
 	GLuint			texture;
 
 	Camera			camera;
+
 	Player*			m_Player;
+
 	Renderer*		m_Renderer;
 
 	CameraController* m_cameraController;
 
 	ObjectManager*	m_ObjectManager;
+
+	Physics*		m_Physics;
 
 	unsigned char*	m_texture;
 
@@ -35,6 +40,9 @@ public:
 
 	void Render();
 	void Update(float elapsedTime);
+
+	void InputKey(float elapsedTime);
+	bool CheckCollisionPlayerByWall(vec3 movePos);
 
 private:
 	void DrawView();

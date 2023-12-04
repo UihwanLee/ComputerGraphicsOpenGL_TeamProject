@@ -141,6 +141,7 @@ void ObjectManager::Scale(int idx, float x, float y, float z)
 	m_ObjectList[idx]->Scale(x, y, z);
 }
 
+
 glm::mat4 ObjectManager::TransformModel(int idx)
 {
 	glm::mat4 model = glm::mat4(1.0f);
@@ -169,11 +170,11 @@ glm::mat4 ObjectManager::TransformModel(int idx)
 		model = glm::mat4(1.0f);
 
 		// 기본 Transform
-		model = glm::scale(model, glm::vec3(scale_x, scale_y, scale_z));
 		model = glm::rotate(model, glm::radians(rotate_x), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(rotate_y), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(rotate_z), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::translate(model, glm::vec3(move_x, move_y, move_z));
+		model = glm::scale(model, glm::vec3(scale_x, scale_y, scale_z));
 
 		// IDX에 따라 Transform을 달리 해준다.
 

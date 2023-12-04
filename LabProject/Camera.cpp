@@ -48,6 +48,12 @@ mat4 Camera::GetRotationMatrix()
 	return rotation;
 }
 
+vec3 Camera::TryMove(vec3 direction, float amount)
+{
+	direction.y = 0;
+	return mPosition + direction * amount;
+}
+
 void Camera::Move(vec3 direction, float amount)
 {
 	direction.y = 0;
