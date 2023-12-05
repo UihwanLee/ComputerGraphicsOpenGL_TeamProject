@@ -140,9 +140,19 @@ void CameraController::MoveLeft(float elapsedTime)
 	m_camera->Move(m_camera->GetRight(), -move_speed * elapsedTime);
 }
 
+bool CameraController::IsMouseControl()
+{
+	return mMouseControl;
+}
+
 mat4 CameraController::GetViewMatrix()
 {
 	return m_camera->GetViewMatrix();
+}
+
+mat4 CameraController::GetRotationMatrix()
+{
+	return m_camera->GetRotationMatrix();
 }
 
 vec3 CameraController::GetCameraFront()

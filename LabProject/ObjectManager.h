@@ -2,16 +2,17 @@
 
 #include "pch.h"
 #include "Object.h"
-#include "Player.h"
+#include "CameraController.h"
 
 class ObjectManager
 {
 public:
-	vector<Object*>	m_ObjectList;
-	GLuint			m_shaderProgramID = 0;
+	vector<Object*>		m_ObjectList;
+	GLuint				m_shaderProgramID = 0;
+	CameraController*	m_cameraController;
 
 public:
-	ObjectManager(GLuint shaderProgramID);
+	ObjectManager(GLuint shaderProgramID, CameraController* cameraController);
 	~ObjectManager();
 
 	int GetRandomIntValue(GLfloat min, GLfloat max);

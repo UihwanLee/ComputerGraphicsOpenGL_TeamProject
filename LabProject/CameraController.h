@@ -37,8 +37,11 @@ public:
 	void MoveRight(float elapsedTime);
 	void MoveLeft(float elapsedTime);
 
+	bool IsMouseControl();
+
 public:
 	mat4 GetViewMatrix();
+	mat4 GetRotationMatrix();
 	vec3 GetCameraFront();
 
 	vec3 GetPosition();

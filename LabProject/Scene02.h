@@ -42,6 +42,7 @@ public:
 	void Update(float elapsedTime);
 
 	void InputKey(float elapsedTime);
+	void InputMouse();
 	bool CheckCollisionPlayerByWall(vec3 movePos);
 
 private:

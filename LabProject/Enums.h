@@ -31,6 +31,7 @@ enum ObjectType
 	DEFAULT,
 	WALL,
 	TABLE,
+	PICK,
 	PICKING
 };
 

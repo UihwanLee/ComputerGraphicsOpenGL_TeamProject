@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "ObjectManager.h"
 
-ObjectManager::ObjectManager(GLuint shaderProgramID)
+ObjectManager::ObjectManager(GLuint shaderProgramID, CameraController* cameraController)
 {
 	m_shaderProgramID = shaderProgramID;
 	m_ObjectList.clear();
+	m_cameraController = cameraController;
 }
 
 ObjectManager::~ObjectManager()
@@ -12,7 +13,11 @@ ObjectManager::~ObjectManager()
 	for (int i = 0; i < m_ObjectList.size(); i++)
 	{
 		delete m_ObjectList[i];
+		m_ObjectList[i] = nullptr;
 	}
+	
+	delete m_cameraController;
+	m_cameraController = nullptr;
 }
 
 int ObjectManager::GetRandomIntValue(GLfloat min, GLfloat max)
@@ -155,6 +160,14 @@ glm::mat4 ObjectManager::TransformModel(int idx)
 		float move_x_parent; float move_y_parent; float move_z_parent;
 		float rotate_y_parent;
 
+		// Picking 상태이면 Camera Transform을 따라감
+		if (m_ObjectList[idx]->m_type == ObjectType::PICKING)
+		{
+			vec3 position = m_cameraController->TryMoveFront(0.5f);
+
+			m_ObjectList[idx]->m_position = position;
+		}
+
 		float move_x = m_ObjectList[idx]->m_position.x;
 		float move_y = m_ObjectList[idx]->m_position.y;
 		float move_z = m_ObjectList[idx]->m_position.z;
@@ -177,10 +190,6 @@ glm::mat4 ObjectManager::TransformModel(int idx)
 		model = glm::scale(model, glm::vec3(scale_x, scale_y, scale_z));
 
 		// IDX에 따라 Transform을 달리 해준다.
-
-		// Picking 상태이면 Camera Transform을 따라감
-
-		// glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
 	}
 
 	return model;

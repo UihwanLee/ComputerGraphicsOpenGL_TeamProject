@@ -31,7 +31,7 @@ Scene02::Scene02(CameraController* cameracontroller)
 {
 	m_Renderer = new Renderer(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	m_ObjectManager = new ObjectManager(m_Renderer->GetShaderProgramID());
+	m_ObjectManager = new ObjectManager(m_Renderer->GetShaderProgramID(), cameracontroller);
 
 	m_shaderProgramID = m_Renderer->GetShaderProgramID();
 
@@ -200,7 +200,7 @@ void Scene02::InitObject()
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 0.0f), ObjectType::DEFAULT);
 	m_ObjectManager->SetPosition(idx, 0.0f, 0.4f, 0.0f);
 
-	m_ObjectManager->CreateCube(&idx, highp_vec3(0.0f, 1.0f, 0.0f), ObjectType::PICKING);
+	m_ObjectManager->CreateCube(&idx, highp_vec3(0.0f, 1.0f, 0.0f), ObjectType::PICK);
 	m_ObjectManager->SetPosition(idx, 5.0f, -0.5f, 0.0f);
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), ObjectType::TABLE);
@@ -222,11 +222,36 @@ void Scene02::Update(float elapsedTime)
 {
 	m_Player->Update(elapsedTime);
 	InputKey(elapsedTime);
+	InputMouse();
 }
 
 bool Scene02::CheckCollisionPlayerByWall(vec3 movePos)
 {
 	return m_Physics->CheckCollisionPlayerByWall(movePos);
+}
+
+void Scene02::InputMouse()
+{
+	if (m_cameraController->IsMouseControl())
+	{
+		for (int i = 0; i < m_ObjectManager->m_ObjectList.size(); i++)
+		{
+			if (m_ObjectManager->m_ObjectList[i]->m_type == ObjectType::PICK)
+			{
+				m_ObjectManager->m_ObjectList[i]->m_type = ObjectType::PICKING;
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < m_ObjectManager->m_ObjectList.size(); i++)
+		{
+			if (m_ObjectManager->m_ObjectList[i]->m_type == ObjectType::PICKING)
+			{
+				m_ObjectManager->m_ObjectList[i]->m_type = ObjectType::PICK;
+			}
+		}
+	}
 }
 
 void Scene02::InputKey(float elapsedTime)

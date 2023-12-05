@@ -9,7 +9,7 @@ Scene01::Scene01(CameraController* cameracontroller)
 {
 	m_Renderer = new Renderer(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	m_ObjectMgr = new ObjectManager(m_Renderer->GetShaderProgramID());
+	m_ObjectMgr = new ObjectManager(m_Renderer->GetShaderProgramID(), cameracontroller);
 	// m_ObjectMgr->Init(cameracontroller);
 }
 
