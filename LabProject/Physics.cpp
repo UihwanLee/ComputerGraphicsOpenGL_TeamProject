@@ -113,7 +113,6 @@ bool Physics::CheckCollisionPlayerByWall(vec3 movePos)
 		{
 			if (BBOverlap_Player(m_Player, i, movePos))
 			{
-				cout << i << endl;
 				return false;
 			}
 		}

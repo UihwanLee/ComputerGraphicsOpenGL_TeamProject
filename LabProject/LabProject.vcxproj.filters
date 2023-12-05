@@ -34,9 +34,6 @@
     <Filter Include="Light">
       <UniqueIdentifier>{a042a60a-2bf4-4991-a190-e30c67a1581e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Physical">
-      <UniqueIdentifier>{f049d6a6-be56-476d-98e1-1ce64756f57c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{1c543b2d-f498-47d7-9f3c-1ca216262c97}</UniqueIdentifier>
     </Filter>

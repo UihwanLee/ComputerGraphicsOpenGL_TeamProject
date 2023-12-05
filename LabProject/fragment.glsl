@@ -16,8 +16,8 @@ uniform vec3 viewPos;
 uniform vec3 objectColor; 
 uniform sampler2D outTexture;
 
-uniform vec3 pointLightPos[5];
-float nPointLightPos = 5;
+uniform vec3 pointLightPos[20];
+float nPointLightPos = 20;
 
 vec4 CalcPointLight(vec3 lightPos, vec3 lightColor)
 {

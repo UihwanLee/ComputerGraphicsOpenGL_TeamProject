@@ -3,12 +3,28 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-vec3 pointLightPositions[5] = {
+float nPointLightPositions = 20;
+vec3 pointLightPositions[20] = {
 		glm::vec3(0.0f,  0.0f, 0.0f),
 		glm::vec3(4.0f,  0.0f, 0.0f),
 		glm::vec3(-4.0f,  0.0f, 0.0f),
 		glm::vec3(0.0f,  0.0f, 7.0f),
 		glm::vec3(0.0f,  0.0f, 15.0f),
+		glm::vec3(0.0f,  0.0f, 26.0f),
+		glm::vec3(0.0f,  0.0f, 26.0f),
+		glm::vec3(0.0f,  0.0f, 26.0f),
+		glm::vec3(0.0f,  0.0f, 42.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f),
+		glm::vec3(0.0f,  0.0f, 0.0f)
 };
 
 Scene02::Scene02(CameraController* cameracontroller)
@@ -80,6 +96,7 @@ void Scene02::InitMap()
 	// 옆면		   -> (0.2f, y, z)
 	// 윗면 아랫면 -> (x, 0.2f, z)
 
+	// 시작 단계
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 15.0f, 0.2f, 15.0f);
 	m_ObjectManager->SetPosition(idx, 0.0f, wall_bottom_y, 0.0f);
@@ -104,8 +121,9 @@ void Scene02::InitMap()
 	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
 	m_ObjectManager->SetPosition(idx, 7.5f, wall_side_y, 0.0f);
 
+	// 통로1
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
-	m_ObjectManager->SetScale(idx, 5.0f, 0.2f, 15.0f);
+	m_ObjectManager->SetScale(idx, 6.0f, 0.2f, 15.0f);
 	m_ObjectManager->SetPosition(idx, 0.0f, wall_bottom_y, 15.0f);
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
@@ -116,13 +134,78 @@ void Scene02::InitMap()
 	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 15.0f);
 	m_ObjectManager->SetPosition(idx, -3.0f, wall_side_y, 15.0f);
 
+	// 재단 방1
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 8.0f);
+	m_ObjectManager->SetPosition(idx, -5.0f, wall_side_y, 26.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 2.5f, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, -4.2f, wall_side_y, 22.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 2.5f, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, -4.2f, wall_side_y, 30.5f);
+
+	// 통로2
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 6.0f, 0.2f, 8.0f);
+	m_ObjectManager->SetPosition(idx, 0.0f, wall_bottom_y, 34.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 8.0f);
+	m_ObjectManager->SetPosition(idx, 3.0f, wall_side_y, 34.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 8.0f);
+	m_ObjectManager->SetPosition(idx, -3.0f, wall_side_y, 34.5f);
+
+	// 재단 오브젝트 방
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 10.0f, 0.2f, 5.0f);
+	m_ObjectManager->SetPosition(idx, 0.0f, wall_bottom_y, 41.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 2.5f, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, -4.2f, wall_side_y, 38.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 2.5f, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 4.2f, wall_side_y, 38.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 10.0f, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 0.0f, wall_side_y, 43.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 5.0f);
+	m_ObjectManager->SetPosition(idx, -4.2f, wall_side_y, 41.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 5.0f, 5.0f);
+	m_ObjectManager->SetPosition(idx, 4.2f, wall_side_y, 41.0f);
+
+	// 긴 통로
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 30.0f, 0.2f, 8.0f);
+	m_ObjectManager->SetPosition(idx, 8.0f, wall_bottom_y, 26.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 24.0, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 15.0f, wall_side_y, 22.5f);
 }
 
 void Scene02::InitObject()
 {
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 0.0f), ObjectType::DEFAULT);
-	m_ObjectManager->SetScale(idx, 1.0, 1.0f, 1.0f);
 	m_ObjectManager->SetPosition(idx, 0.0f, 0.4f, 0.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(0.0f, 1.0f, 0.0f), ObjectType::PICKING);
+	m_ObjectManager->SetPosition(idx, 5.0f, -0.5f, 0.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), ObjectType::TABLE);
+	m_ObjectManager->SetScale(idx, 1.0f, 0.75f, 2.5f);
+	m_ObjectManager->SetPosition(idx, -4.5f, -0.75f, 26.5f);
 }
 
 void Scene02::Render()
@@ -205,7 +288,7 @@ void Scene02::DrawLight()
 {
 	m_Player->DrawPlayerLight();
 
-	glUniform3fv(glGetUniformLocation(m_shaderProgramID, "pointLightPos"), 5, value_ptr(pointLightPositions[0]));
+	glUniform3fv(glGetUniformLocation(m_shaderProgramID, "pointLightPos"), nPointLightPositions, value_ptr(pointLightPositions[0]));
 }
 
 void Scene02::DrawObject(int DRAW_TYPE, glm::mat4& model, int idx)
