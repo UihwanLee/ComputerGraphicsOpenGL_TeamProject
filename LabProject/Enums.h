@@ -29,6 +29,7 @@ enum class KeyState
 enum ObjectType
 {
 	DEFAULT,
+	RAY,
 	WALL,
 	TABLE,
 	PICK,

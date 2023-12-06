@@ -49,14 +49,25 @@ void CameraController::MouseDown(int button, int state, int x, int y)
 	KeyState& m_state = m_keyboard->GetState()[button];
 
 	if (m_state == KeyState::PRESS)
+	{
+		mMouseDown = true;
 		mMouseControl = true;
+		mMouseUp = false;
+	}
 	else if (m_state == KeyState::UP)
+	{
+		mMouseDown = false;
 		mMouseControl = false;
+		mMouseUp = true;
+	}
 }
 
 void CameraController::MouseMove(int x, int y)
 {
 	m_keyboard->MouseMove(x, y);
+
+	mMouseDown = false;
+	mMouseUp = false;
 
 	POINT deltaPos;
 	deltaPos.x = m_keyboard->GetMousePos().x - m_keyboard->GetFirstMousePos().x;
@@ -140,6 +151,16 @@ void CameraController::MoveLeft(float elapsedTime)
 	m_camera->Move(m_camera->GetRight(), -move_speed * elapsedTime);
 }
 
+bool CameraController::IsMouseDown()
+{
+	return mMouseDown;
+}
+
+bool CameraController::IsMouseUp()
+{
+	return mMouseUp;
+}
+
 bool CameraController::IsMouseControl()
 {
 	return mMouseControl;
@@ -163,6 +184,11 @@ vec3 CameraController::GetCameraFront()
 vec3 CameraController::GetPosition()
 {
 	return m_camera->GetPosition();
+}
+
+vec3 CameraController::GetRotate()
+{
+	return m_camera->GetRotate();
 }
 
 void CameraController::SetView()

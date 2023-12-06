@@ -36,8 +36,10 @@ public:
 	void MoveBack(float elapsedTime);
 	void MoveRight(float elapsedTime);
 	void MoveLeft(float elapsedTime);
-
+	
+	bool IsMouseDown();
 	bool IsMouseControl();
+	bool IsMouseUp();
 
 public:
 	mat4 GetViewMatrix();
@@ -45,6 +47,7 @@ public:
 	vec3 GetCameraFront();
 
 	vec3 GetPosition();
+	vec3 GetRotate();
 
 	void SetView();
 	Light* GetLight();
@@ -56,5 +59,7 @@ private:
 	KeyBoard*	m_keyboard;
 	Light*		m_light;
 
-	bool mMouseControl;
+	bool		mMouseControl;
+	bool		mMouseDown;
+	bool		mMouseUp;
 };

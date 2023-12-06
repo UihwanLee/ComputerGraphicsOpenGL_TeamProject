@@ -225,6 +225,11 @@ void Scene02::Update(float elapsedTime)
 	InputMouse();
 }
 
+bool Scene02::CheckRayCastingCollision()
+{
+	return m_Physics->CheckRayCastingCollision();
+}
+
 bool Scene02::CheckCollisionPlayerByWall(vec3 movePos)
 {
 	return m_Physics->CheckCollisionPlayerByWall(movePos);
@@ -232,7 +237,19 @@ bool Scene02::CheckCollisionPlayerByWall(vec3 movePos)
 
 void Scene02::InputMouse()
 {
-	if (m_cameraController->IsMouseControl())
+	if (m_cameraController->IsMouseDown())
+	{
+		bool isPicking = m_Physics->CheckRayCastingCollision();
+		cout << isPicking << endl;
+	}
+
+	if (m_cameraController->IsMouseUp())
+	{
+		// PICKING 오브젝트 놓기
+	}
+
+
+	/*if (m_cameraController->IsMouseControl())
 	{
 		for (int i = 0; i < m_ObjectManager->m_ObjectList.size(); i++)
 		{
@@ -251,7 +268,7 @@ void Scene02::InputMouse()
 				m_ObjectManager->m_ObjectList[i]->m_type = ObjectType::PICK;
 			}
 		}
-	}
+	}*/
 }
 
 void Scene02::InputKey(float elapsedTime)

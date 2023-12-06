@@ -105,9 +105,14 @@ bool Physics::BBOverlap(int srcID, int dstID)
 	return false;
 }
 
+bool Physics::CheckRayCastingCollision()
+{
+	return false;
+}
+
 bool Physics::CheckCollisionPlayerByWall(vec3 movePos)
 {
-	for (int i = 0; i < m_ObjectManager->m_ObjectList.size(); i++)
+	for (int i = 1; i < m_ObjectManager->m_ObjectList.size(); i++)
 	{
 		if (m_ObjectManager->m_ObjectList[i]->m_type == ObjectType::WALL)
 		{

@@ -43,6 +43,8 @@ public:
 
 	void InputKey(float elapsedTime);
 	void InputMouse();
+
+	bool CheckRayCastingCollision();
 	bool CheckCollisionPlayerByWall(vec3 movePos);
 
 private:

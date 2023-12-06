@@ -18,6 +18,7 @@ public:
 	bool BBOverlap_Player(Player* player, int srcID, vec3 movePos);
 	bool BBOverlap(int srcID, int dstID);
 
+	bool CheckRayCastingCollision();
 	bool CheckCollisionPlayerByWall(vec3 movePos);
 };
 
