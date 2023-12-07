@@ -29,11 +29,11 @@ enum class KeyState
 enum ObjectType
 {
 	DEFAULT,
-	RAY,
 	WALL,
 	TABLE,
 	PICK,
-	PICKING
+	PICKING,
+	STICK
 };
 
 enum class SceneType

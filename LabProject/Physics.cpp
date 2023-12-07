@@ -98,6 +98,10 @@ bool Physics::BBOverlap_RayCast(vec3 viewPos, int srcID)
 			return false;
 		if (viewPos.y < srcMinY)
 			return false;
+		if (viewPos.z > srcMaxZ)
+			return false;
+		if (viewPos.z < srcMinZ)
+			return false;
 
 		return true;
 	}

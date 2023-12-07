@@ -10,9 +10,9 @@ vec3 pointLightPositions[20] = {
 		glm::vec3(-4.0f,  0.0f, 0.0f),
 		glm::vec3(0.0f,  0.0f, 7.0f),
 		glm::vec3(0.0f,  0.0f, 15.0f),
-		glm::vec3(0.0f,  0.0f, 26.0f),
-		glm::vec3(0.0f,  0.0f, 26.0f),
-		glm::vec3(0.0f,  0.0f, 26.0f),
+		glm::vec3(0.0f,  0.0f, 26.5f),
+		glm::vec3(0.0f,  0.0f, 26.5f),
+		glm::vec3(10.0f,  0.0f, 26.5f),
 		glm::vec3(0.0f,  0.0f, 42.0f),
 		glm::vec3(0.0f,  0.0f, 0.0f),
 		glm::vec3(0.0f,  0.0f, 0.0f),
@@ -39,6 +39,7 @@ Scene02::Scene02(CameraController* cameracontroller)
 	m_cameraController->Init(vec3(0.f, 0.0f, -3.f), vec3(0.f, 0.f, 180.f));
 
 	idx = -1;
+	curPickID = 0;
 }
 
 Scene02::~Scene02()
@@ -193,16 +194,31 @@ void Scene02::InitMap()
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
 	m_ObjectManager->SetScale(idx, 24.0, 5.0f, 0.2f);
 	m_ObjectManager->SetPosition(idx, 15.0f, wall_side_y, 22.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 24.0, 5.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 15.0f, wall_side_y, 30.5f);
+
+	// 문1
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2, 5.0f, 3.0f);
+	m_ObjectManager->SetPosition(idx, 13.0f, wall_side_y, 24.0f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2, 5.0f, 3.0f);
+	m_ObjectManager->SetPosition(idx, 13.0f, wall_side_y, 29.0f);
 }
 
 void Scene02::InitObject()
 {
-	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 0.0f), ObjectType::DEFAULT);
-	m_ObjectManager->SetPosition(idx, 0.0f, 0.4f, 0.0f);
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 0.0f), ObjectType::PICK);
+	m_ObjectManager->SetPosition(idx, 2.0f, -0.5f, 40.0f);
 
-	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), ObjectType::DEFAULT);
+	// 제단1
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), ObjectType::TABLE);
 	m_ObjectManager->SetScale(idx, 1.0f, 0.75f, 2.5f);
 	m_ObjectManager->SetPosition(idx, -4.5f, -0.75f, 26.5f);
+	m_table01 = idx;
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(0.0f, 1.0f, 0.0f), ObjectType::PICK);
 	m_ObjectManager->SetPosition(idx, 5.0f, -0.5f, 0.0f);
@@ -291,7 +307,8 @@ void Scene02::CheckRayCastingCollision()
 				vec3 viewPos = m_cameraController->TryMoveFront(rayDist);
 				if (m_Physics->CheckRayCastingCollision(viewPos, idx))
 				{
-					m_ObjectManager->m_ObjectList[idx]->ChangeType(ObjectType::PICKING);
+					curPickID = idx;
+					m_ObjectManager->m_ObjectList[curPickID]->ChangeType(ObjectType::PICKING);
 				}
 			}
 		}
@@ -300,12 +317,16 @@ void Scene02::CheckRayCastingCollision()
 
 void Scene02::ResetRayCastingCollision()
 {
-	// 피킹된 오브젝트 놓기
-	for (int idx = 1; idx < m_ObjectManager->m_ObjectList.size(); idx++)
+	// 제단 오브젝트와 충돌했는지 체크
+	if (CheckCollisionPickObjByTable())
 	{
-		if (m_ObjectManager->m_ObjectList[idx]->m_type == ObjectType::PICKING)
+		m_ObjectManager->m_ObjectList[curPickID]->ChangeType(ObjectType::STICK);
+	}
+	else
+	{
+		if (curPickID)
 		{
-			m_ObjectManager->m_ObjectList[idx]->ChangeType(ObjectType::PICK);
+			m_ObjectManager->m_ObjectList[curPickID]->ChangeType(ObjectType::PICK);
 		}
 	}
 }
@@ -313,6 +334,22 @@ void Scene02::ResetRayCastingCollision()
 bool Scene02::CheckCollisionPlayerByWall(vec3 movePos)
 {
 	return m_Physics->CheckCollisionPlayerByWall(movePos);
+}
+
+bool Scene02::CheckCollisionPickObjByTable()
+{
+	// 제단 오브젝트와 충돌 체크
+	if (curPickID)
+	{
+		if (m_Physics->BBOverlap(curPickID, m_table01))
+		{
+			// 문 열림
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void Scene02::ApplyGravity()

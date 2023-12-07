@@ -29,6 +29,9 @@ private:
 	unsigned char*	m_texture;
 
 	int				idx;
+	int				curPickID;
+
+	int				m_table01; // Á¦´Ü1
 
 public:
 	Scene02(CameraController*);
@@ -47,6 +50,7 @@ public:
 	void CheckRayCastingCollision();
 	void ResetRayCastingCollision();
 	bool CheckCollisionPlayerByWall(vec3 movePos);
+	bool CheckCollisionPickObjByTable();
 	void ApplyGravity();
 
 private:
