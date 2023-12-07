@@ -200,12 +200,15 @@ void Scene02::InitObject()
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 0.0f), ObjectType::DEFAULT);
 	m_ObjectManager->SetPosition(idx, 0.0f, 0.4f, 0.0f);
 
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), ObjectType::DEFAULT);
+	m_ObjectManager->SetScale(idx, 1.0f, 0.75f, 2.5f);
+	m_ObjectManager->SetPosition(idx, -4.5f, -0.75f, 26.5f);
+
 	m_ObjectManager->CreateCube(&idx, highp_vec3(0.0f, 1.0f, 0.0f), ObjectType::PICK);
 	m_ObjectManager->SetPosition(idx, 5.0f, -0.5f, 0.0f);
 
-	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), ObjectType::TABLE);
-	m_ObjectManager->SetScale(idx, 1.0f, 0.75f, 2.5f);
-	m_ObjectManager->SetPosition(idx, -4.5f, -0.75f, 26.5f);
+	m_ObjectManager->CreateCube(&idx, highp_vec3(0.0f, 0.0f, 1.0f), ObjectType::PICK);
+	m_ObjectManager->SetPosition(idx, -5.0f, -0.5f, 0.0f);
 }
 
 void Scene02::Render()
@@ -223,12 +226,14 @@ void Scene02::Update(float elapsedTime)
 	m_Player->Update(elapsedTime);
 	InputKey(elapsedTime);
 	InputMouse();
+	ApplyGravity();
 }
 
 void Scene02::InputMouse()
 {
 	if (m_cameraController->IsMouseDown())
 	{
+		// 오브젝트 피킹 검사
 		CheckRayCastingCollision();
 	}
 
@@ -273,19 +278,19 @@ void Scene02::InputKey(float elapsedTime)
 
 void Scene02::CheckRayCastingCollision()
 {
-	vector<float> rayList = { 0.0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f };
+	float pickID = 0;
+	float curDist = 9999.0f;
+	vector<float> rayList = { 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f, 0.0f };
 	for (int i = 0; i < rayList.size(); i++)
 	{
 		float rayDist = rayList[i];
-		for (int idx = 1; idx < m_ObjectManager->m_ObjectList.size(); idx++)
+		for (int idx = 0; idx < m_ObjectManager->m_ObjectList.size(); idx++)
 		{
 			if (m_ObjectManager->m_ObjectList[idx]->m_type == ObjectType::PICK)
 			{
 				vec3 viewPos = m_cameraController->TryMoveFront(rayDist);
-				float pickID = m_Physics->CheckRayCastingCollision(viewPos, idx);
-				if (pickID)
+				if (m_Physics->CheckRayCastingCollision(viewPos, idx))
 				{
-					// 피킹된 오브젝트가 있으면 TYPE 바꿔주기
 					m_ObjectManager->m_ObjectList[idx]->ChangeType(ObjectType::PICKING);
 				}
 			}
@@ -308,6 +313,11 @@ void Scene02::ResetRayCastingCollision()
 bool Scene02::CheckCollisionPlayerByWall(vec3 movePos)
 {
 	return m_Physics->CheckCollisionPlayerByWall(movePos);
+}
+
+void Scene02::ApplyGravity()
+{
+	m_Physics->ApplyGravity();
 }
 
 void Scene02::DrawView()

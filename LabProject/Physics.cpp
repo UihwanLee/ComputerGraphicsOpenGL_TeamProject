@@ -70,7 +70,7 @@ bool Physics::BBOverlap_Player(Player* player, int srcID, vec3 movePos)
 	return false;
 }
 
-float Physics::BBOverlap_RayCast(vec3 viewPos, int srcID)
+bool Physics::BBOverlap_RayCast(vec3 viewPos, int srcID)
 {
 	if (m_ObjectManager->m_ObjectList[srcID] != NULL)
 	{
@@ -99,10 +99,10 @@ float Physics::BBOverlap_RayCast(vec3 viewPos, int srcID)
 		if (viewPos.y < srcMinY)
 			return false;
 
-		return srcID;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
 bool Physics::BBOverlap(int srcID, int dstID)
@@ -160,4 +160,22 @@ bool Physics::CheckCollisionPlayerByWall(vec3 movePos)
 	}
 
 	return true;
+}
+
+void Physics::ApplyGravity()
+{
+	for (int i = 0; i < m_ObjectManager->m_ObjectList.size(); i++)
+	{
+		if (m_ObjectManager->m_ObjectList[i]->m_type == ObjectType::PICK)
+		{
+			if (m_ObjectManager->m_ObjectList[i]->GetPosition().y > -0.5f)
+			{
+				m_ObjectManager->m_ObjectList[i]->Move(0.0f, -0.1f, 0.0f);
+			}
+			else
+			{
+				m_ObjectManager->m_ObjectList[i]->m_position.y = -0.5f;
+			}
+		}
+	}
 }

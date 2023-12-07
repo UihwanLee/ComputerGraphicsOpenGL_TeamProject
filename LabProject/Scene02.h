@@ -47,6 +47,7 @@ public:
 	void CheckRayCastingCollision();
 	void ResetRayCastingCollision();
 	bool CheckCollisionPlayerByWall(vec3 movePos);
+	void ApplyGravity();
 
 private:
 	void DrawView();

@@ -31,8 +31,6 @@ public:
 	void Rotate(int idx, float x, float y, float z);
 	void Scale(int idx, float x, float y, float z);
 
-	void ChangeType(int idx, ObjectType type);
-
 	// 좌표계 변화
 	glm::mat4 TransformModel(int idx);
 

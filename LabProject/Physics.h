@@ -16,10 +16,12 @@ public:
 	void GetPlayerBBMax(float* x, float* y, float* z, vec3 movePos);
 
 	bool BBOverlap_Player(Player* player, int srcID, vec3 movePos);
-	float BBOverlap_RayCast(vec3 viewPos, int srcID);
+	bool BBOverlap_RayCast(vec3 viewPos, int srcID);
 	bool BBOverlap(int srcID, int dstID);
 
 	float CheckRayCastingCollision(vec3 viewPos, int srcID);
 	bool CheckCollisionPlayerByWall(vec3 movePos);
+
+	void ApplyGravity();
 };
 

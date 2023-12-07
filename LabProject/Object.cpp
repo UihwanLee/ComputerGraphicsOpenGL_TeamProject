@@ -44,6 +44,11 @@ void Object::SetActive(bool bActive)
 	m_bActive = bActive;
 }
 
+vec3 Object::GetPosition()
+{
+	return m_position;
+}
+
 
 void Object::Move(float x, float y, float z)
 {

@@ -146,11 +146,6 @@ void ObjectManager::Scale(int idx, float x, float y, float z)
 	m_ObjectList[idx]->Scale(x, y, z);
 }
 
-void ObjectManager::ChangeType(int idx, ObjectType type)
-{
-	m_ObjectList[idx]->ChangeType(type);
-}
-
 glm::mat4 ObjectManager::TransformModel(int idx)
 {
 	glm::mat4 model = glm::mat4(1.0f);
