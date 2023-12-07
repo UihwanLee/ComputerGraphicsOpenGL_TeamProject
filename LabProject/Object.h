@@ -44,5 +44,7 @@ public:
 	void GetBBMin(float* x, float* y, float* z);
 	void GetBBMax(float* x, float* y, float* z);
 
+	void ChangeType(ObjectType type);
+
 	bool LoadMeshInfoFromFile(const char* file_name);
 };

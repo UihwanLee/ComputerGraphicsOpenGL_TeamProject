@@ -70,6 +70,41 @@ bool Physics::BBOverlap_Player(Player* player, int srcID, vec3 movePos)
 	return false;
 }
 
+float Physics::BBOverlap_RayCast(vec3 viewPos, int srcID)
+{
+	if (m_ObjectManager->m_ObjectList[srcID] != NULL)
+	{
+		Object* src = m_ObjectManager->m_ObjectList[srcID];
+
+		float srcMinX, srcMinY, srcMinZ;
+		float srcMaxX, srcMaxY, srcMaxZ;
+
+		src->GetBBMin(&srcMinX, &srcMinY, &srcMinZ);
+		src->GetBBMax(&srcMaxX, &srcMaxY, &srcMaxZ);
+
+		/*cout << "mouse X : " << viewPos.x << endl;
+		cout << "minX : " << srcMinX << endl;
+		cout << "maxX : " << srcMaxX << endl;
+		cout << endl;
+		cout << "mouse Y : " << viewPos.y << endl;
+		cout << "minY : " << srcMinY << endl;
+		cout << "maxY : " << srcMaxY << endl;*/
+
+		if (viewPos.x > srcMaxX)
+			return false;
+		if (viewPos.x < srcMinX)
+			return false;
+		if (viewPos.y > srcMaxY)
+			return false;
+		if (viewPos.y < srcMinY)
+			return false;
+
+		return srcID;
+	}
+
+	return 0;
+}
+
 bool Physics::BBOverlap(int srcID, int dstID)
 {
 	if (m_ObjectManager->m_ObjectList[srcID] != NULL && m_ObjectManager->m_ObjectList[dstID] != NULL)
@@ -105,9 +140,10 @@ bool Physics::BBOverlap(int srcID, int dstID)
 	return false;
 }
 
-bool Physics::CheckRayCastingCollision()
+float Physics::CheckRayCastingCollision(vec3 viewPos, int srcID)
 {
-	return false;
+	// Picking 적용 대상이 되는 오브젝트에서 Ray Casting Collision 체크
+	return BBOverlap_RayCast(viewPos, srcID);
 }
 
 bool Physics::CheckCollisionPlayerByWall(vec3 movePos)

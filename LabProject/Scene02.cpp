@@ -225,50 +225,18 @@ void Scene02::Update(float elapsedTime)
 	InputMouse();
 }
 
-bool Scene02::CheckRayCastingCollision()
-{
-	return m_Physics->CheckRayCastingCollision();
-}
-
-bool Scene02::CheckCollisionPlayerByWall(vec3 movePos)
-{
-	return m_Physics->CheckCollisionPlayerByWall(movePos);
-}
-
 void Scene02::InputMouse()
 {
 	if (m_cameraController->IsMouseDown())
 	{
-		bool isPicking = m_Physics->CheckRayCastingCollision();
-		cout << isPicking << endl;
+		CheckRayCastingCollision();
 	}
 
 	if (m_cameraController->IsMouseUp())
 	{
 		// PICKING 오브젝트 놓기
+		ResetRayCastingCollision();
 	}
-
-
-	/*if (m_cameraController->IsMouseControl())
-	{
-		for (int i = 0; i < m_ObjectManager->m_ObjectList.size(); i++)
-		{
-			if (m_ObjectManager->m_ObjectList[i]->m_type == ObjectType::PICK)
-			{
-				m_ObjectManager->m_ObjectList[i]->m_type = ObjectType::PICKING;
-			}
-		}
-	}
-	else
-	{
-		for (int i = 0; i < m_ObjectManager->m_ObjectList.size(); i++)
-		{
-			if (m_ObjectManager->m_ObjectList[i]->m_type == ObjectType::PICKING)
-			{
-				m_ObjectManager->m_ObjectList[i]->m_type = ObjectType::PICK;
-			}
-		}
-	}*/
 }
 
 void Scene02::InputKey(float elapsedTime)
@@ -301,6 +269,45 @@ void Scene02::InputKey(float elapsedTime)
 			m_cameraController->MoveRight(elapsedTime);
 		}
 	}
+}
+
+void Scene02::CheckRayCastingCollision()
+{
+	vector<float> rayList = { 0.0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f };
+	for (int i = 0; i < rayList.size(); i++)
+	{
+		float rayDist = rayList[i];
+		for (int idx = 1; idx < m_ObjectManager->m_ObjectList.size(); idx++)
+		{
+			if (m_ObjectManager->m_ObjectList[idx]->m_type == ObjectType::PICK)
+			{
+				vec3 viewPos = m_cameraController->TryMoveFront(rayDist);
+				float pickID = m_Physics->CheckRayCastingCollision(viewPos, idx);
+				if (pickID)
+				{
+					// 피킹된 오브젝트가 있으면 TYPE 바꿔주기
+					m_ObjectManager->m_ObjectList[idx]->ChangeType(ObjectType::PICKING);
+				}
+			}
+		}
+	}
+}
+
+void Scene02::ResetRayCastingCollision()
+{
+	// 피킹된 오브젝트 놓기
+	for (int idx = 1; idx < m_ObjectManager->m_ObjectList.size(); idx++)
+	{
+		if (m_ObjectManager->m_ObjectList[idx]->m_type == ObjectType::PICKING)
+		{
+			m_ObjectManager->m_ObjectList[idx]->ChangeType(ObjectType::PICK);
+		}
+	}
+}
+
+bool Scene02::CheckCollisionPlayerByWall(vec3 movePos)
+{
+	return m_Physics->CheckCollisionPlayerByWall(movePos);
 }
 
 void Scene02::DrawView()

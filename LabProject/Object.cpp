@@ -81,6 +81,11 @@ void Object::GetBBMax(float* x, float* y, float* z)
 	*z = m_position.z + m_scale.z / 2.f;
 }
 
+void Object::ChangeType(ObjectType type)
+{
+	m_type = type;
+}
+
 
 bool Object::LoadMeshInfoFromFile(const char* file_name)
 {
