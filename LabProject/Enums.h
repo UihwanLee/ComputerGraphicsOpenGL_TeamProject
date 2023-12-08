@@ -30,6 +30,7 @@ enum ObjectType
 {
 	DEFAULT,
 	WALL,
+	DOOR,
 	TABLE,
 	PICK,
 	PICKING,

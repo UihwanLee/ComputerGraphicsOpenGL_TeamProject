@@ -86,7 +86,19 @@ void ObjectManager::CreateCube(int* idx, highp_vec3 color, ObjectType type)
 
 	Object* gameObject = new Object();
 
-	gameObject->LoadMeshInfoFromFile("cube.txt");
+	gameObject->LoadMeshInfoFromFile("cube.obj");
+	gameObject->m_type = type;
+
+	CreateFigure(gameObject, color);
+}
+
+void ObjectManager::CreatStatue(int* idx, highp_vec3 color, ObjectType type)
+{
+	*idx += 1;
+
+	Object* gameObject = new Object();
+
+	gameObject->LoadMeshInfoFromFile("statue.obj");
 	gameObject->m_type = type;
 
 	CreateFigure(gameObject, color);
@@ -162,7 +174,7 @@ glm::mat4 ObjectManager::TransformModel(int idx)
 		// Picking 상태이면 Camera Transform을 따라감
 		if (m_ObjectList[idx]->m_type == ObjectType::PICKING)
 		{
-			vec3 position = m_cameraController->TryMoveFront(0.5f);
+			vec3 position = m_cameraController->TryMoveFront(0.2f);
 
 			m_ObjectList[idx]->m_position = position;
 		}

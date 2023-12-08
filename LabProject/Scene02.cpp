@@ -82,6 +82,9 @@ void Scene02::Init()
 	// 맵 생성
 	InitMap();
 
+	// 문 생성
+	InitDoor();
+
 	// 오브젝트 생성
 	InitObject();
 }
@@ -269,10 +272,50 @@ void Scene02::InitMap()
 	m_ObjectManager->SetPosition(idx, 40.0f, wall_bottom_y, 50.5f);
 }
 
+void Scene02::InitDoor()
+{
+	ObjectType type = ObjectType::DOOR;
+
+	float wall_bottom_y = -1.0f;
+	float wall_side_y = 0.3f;
+
+	// 앞면 뒷면   -> (x, y, 0.2f)
+	// 옆면		   -> (0.2f, y, z)
+	// 윗면 아랫면 -> (x, 0.2f, z)
+
+	// 문1
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.1f, 4.0f, 2.0f);
+	m_ObjectManager->SetPosition(idx, 13.0f, 0.7f, 26.5f);
+	m_door01 = idx;
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 29.0f, 0.7f, 16.5f);
+	m_door02 = idx;
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 28.3f, 0.7f, 16.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 27.6f, 0.7f, 16.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 29.7f, 0.7f, 16.5f);
+
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
+	m_ObjectManager->SetPosition(idx, 30.4f, 0.7f, 16.5f);
+}
+
 void Scene02::InitObject()
 {
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 0.0f), ObjectType::PICK);
 	m_ObjectManager->SetPosition(idx, 2.0f, -0.5f, 40.0f);
+	m_object01 = idx;
 
 	// 제단1
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), ObjectType::TABLE);
@@ -282,9 +325,23 @@ void Scene02::InitObject()
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(0.0f, 1.0f, 0.0f), ObjectType::PICK);
 	m_ObjectManager->SetPosition(idx, 5.0f, -0.5f, 0.0f);
+	m_object02 = idx;
 
 	m_ObjectManager->CreateCube(&idx, highp_vec3(0.0f, 0.0f, 1.0f), ObjectType::PICK);
 	m_ObjectManager->SetPosition(idx, -5.0f, -0.5f, 0.0f);
+	m_object03 = idx;
+
+	// 제단2
+	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), ObjectType::TABLE);
+	m_ObjectManager->SetScale(idx, 1.0f, 0.45f, 1.0f);
+	m_ObjectManager->SetPosition(idx, 29.0f, -0.55f, 3.0f);
+	m_table02 = idx;
+
+	// 조각상
+	m_ObjectManager->CreatStatue(&idx, highp_vec3(218.0f / 255.0f, 165.0f / 255.0f, 93.4f / 255.0f), ObjectType::STICK);
+	m_ObjectManager->SetScale(idx, 1.0f, 1.0f, 1.0f);
+	m_ObjectManager->SetPosition(idx, 29.0f, 0.0f, 3.0f);
+	m_statue = idx;
 }
 
 void Scene02::Render()
@@ -302,6 +359,7 @@ void Scene02::Update(float elapsedTime)
 	m_Player->Update(elapsedTime);
 	InputKey(elapsedTime);
 	InputMouse();
+	CheckDoor();
 	ApplyGravity();
 }
 
@@ -401,7 +459,7 @@ bool Scene02::CheckCollisionPickObjByTable()
 	// 제단 오브젝트와 충돌 체크
 	if (curPickID)
 	{
-		if (m_Physics->BBOverlap(curPickID, m_table01))
+		if (m_Physics->BBOverlap(curPickID, m_table01) || m_Physics->BBOverlap(curPickID, m_table02))
 		{
 			// 문 열림
 
@@ -410,6 +468,62 @@ bool Scene02::CheckCollisionPickObjByTable()
 	}
 
 	return false;
+}
+
+void Scene02::CheckDoor()
+{
+	// 제단 오브젝트와 오브젝트 충돌체크
+	if (m_Physics->BBOverlap(m_table01, m_statue)|| m_Physics->BBOverlap(m_table01, m_object01) 
+		|| m_Physics->BBOverlap(m_table01, m_object02) || m_Physics->BBOverlap(m_table01, m_object03))
+	{
+		if (m_ObjectManager->m_ObjectList[m_door01]->GetPosition().y > -3.0f)
+		{
+			m_ObjectManager->m_ObjectList[m_door01]->Move(0.0f, -0.1f, 0.0f);
+		}
+		else
+		{
+			m_ObjectManager->m_ObjectList[m_door01]->m_position.y = -3.0f;
+		}
+	}
+	else
+	{
+		if (m_ObjectManager->m_ObjectList[m_door01]->GetPosition().y < 0.7f)
+		{
+			m_ObjectManager->m_ObjectList[m_door01]->Move(0.0f, 0.1f, 0.0f);
+		}
+		else
+		{
+			m_ObjectManager->m_ObjectList[m_door01]->m_position.y = 0.7f;
+		}
+	}
+
+	// 제단 오브젝트와 조각상 충돌체크
+	for (int i = m_door02; i < m_door02 + 5; i++)
+	{
+		if (m_Physics->BBOverlap(m_table02, m_statue) || m_Physics->BBOverlap(m_table02, m_object01)
+			|| m_Physics->BBOverlap(m_table02, m_object02) || m_Physics->BBOverlap(m_table02, m_object03))
+		{
+			if (m_ObjectManager->m_ObjectList[i]->GetPosition().y > -3.0f)
+			{
+				m_ObjectManager->m_ObjectList[i]->Move(0.0f, -0.1f, 0.0f);
+			}
+			else
+			{
+				m_ObjectManager->m_ObjectList[i]->m_position.y = -3.0f;
+			}
+		}
+		else
+		{
+			if (m_ObjectManager->m_ObjectList[i]->GetPosition().y < 0.7f)
+			{
+				m_ObjectManager->m_ObjectList[i]->Move(0.0f, 0.1f, 0.0f);
+			}
+			else
+			{
+				m_ObjectManager->m_ObjectList[i]->m_position.y = 0.7f;
+			}
+		}
+	}
 }
 
 void Scene02::ApplyGravity()
@@ -496,6 +610,10 @@ void Scene02::TextureMapping(ObjectType type)
 	if (type == ObjectType::WALL)
 	{
 		m_texture = stbi_load("wall_texture.jfif", &widthImage, &heightImage, &numberOfChannel, 0);
+	}
+	else if (type == ObjectType::DOOR)
+	{
+		m_texture = stbi_load("iron.jpg", &widthImage, &heightImage, &numberOfChannel, 0);
 	}
 	else
 	{

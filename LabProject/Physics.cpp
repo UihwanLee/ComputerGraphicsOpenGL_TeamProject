@@ -154,7 +154,7 @@ bool Physics::CheckCollisionPlayerByWall(vec3 movePos)
 {
 	for (int i = 1; i < m_ObjectManager->m_ObjectList.size(); i++)
 	{
-		if (m_ObjectManager->m_ObjectList[i]->m_type == ObjectType::WALL)
+		if (m_ObjectManager->m_ObjectList[i]->m_type == ObjectType::WALL || m_ObjectManager->m_ObjectList[i]->m_type == ObjectType::DOOR)
 		{
 			if (BBOverlap_Player(m_Player, i, movePos))
 			{

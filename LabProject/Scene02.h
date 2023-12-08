@@ -31,7 +31,17 @@ private:
 	int				idx;
 	int				curPickID;
 
+	int				m_object01;
+	int				m_object02;
+	int				m_object03;
+
 	int				m_table01; // 제단1
+	int				m_table02; // 제단2
+
+	int				m_statue; // 조각상
+
+	int				m_door01;  // 문1
+	int				m_door02;  // 문2
 
 public:
 	Scene02(CameraController*);
@@ -39,6 +49,7 @@ public:
 
 	void Init();
 	void InitMap();
+	void InitDoor();
 	void InitObject();
 
 	void Render();
@@ -51,6 +62,7 @@ public:
 	void ResetRayCastingCollision();
 	bool CheckCollisionPlayerByWall(vec3 movePos);
 	bool CheckCollisionPickObjByTable();
+	void CheckDoor();
 	void ApplyGravity();
 
 private:
