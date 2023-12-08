@@ -333,14 +333,14 @@ void Scene02::InitObject()
 
 	// 제단2
 	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), ObjectType::TABLE);
-	m_ObjectManager->SetScale(idx, 1.0f, 0.45f, 1.0f);
-	m_ObjectManager->SetPosition(idx, 29.0f, -0.55f, 3.0f);
+	m_ObjectManager->SetScale(idx, 1.0f, 0.25f, 1.0f);
+	m_ObjectManager->SetPosition(idx, 29.0f, -0.75f, 3.0f);
 	m_table02 = idx;
 
 	// 조각상
-	m_ObjectManager->CreatStatue(&idx, highp_vec3(218.0f / 255.0f, 165.0f / 255.0f, 93.4f / 255.0f), ObjectType::STICK);
+	m_ObjectManager->CreatStatue(&idx, highp_vec3(218.0f / 255.0f, 165.0f / 255.0f, 93.4f / 255.0f), ObjectType::PICK);
 	m_ObjectManager->SetScale(idx, 1.0f, 1.0f, 1.0f);
-	m_ObjectManager->SetPosition(idx, 29.0f, 0.0f, 3.0f);
+	m_ObjectManager->SetPosition(idx, 29.0f, -0.5f, 3.0f);
 	m_statue = idx;
 }
 
@@ -475,10 +475,6 @@ bool Scene02::CheckCollisionPickObjByTable()
 		{
 			// view 하나 생성
 
-			return true;
-		}
-		else if (m_Physics->BBOverlap(curPickID, m_table02))
-		{
 			return true;
 		}
 	}
