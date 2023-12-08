@@ -346,12 +346,24 @@ void Scene02::InitObject()
 
 void Scene02::Render()
 {
+	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
 	DrawView();
 	DrawProjection();
 	DrawLight();
 
 	DrawStage2();
-	DrawEndStage();
+
+	/*glViewport(WINDOW_WIDTH / 2.0, WINDOW_HEIGHT / 2.0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	CameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	DrawViewByCamera();
+	DrawProjection();
+	DrawLight();
+
+	DrawStage2();
+	DrawEndStage();*/
 }
 
 void Scene02::Update(float elapsedTime)
@@ -459,10 +471,14 @@ bool Scene02::CheckCollisionPickObjByTable()
 	// 제단 오브젝트와 충돌 체크
 	if (curPickID)
 	{
-		if (m_Physics->BBOverlap(curPickID, m_table01) || m_Physics->BBOverlap(curPickID, m_table02))
+		if (m_Physics->BBOverlap(curPickID, m_table01))
 		{
-			// 문 열림
+			// view 하나 생성
 
+			return true;
+		}
+		else if (m_Physics->BBOverlap(curPickID, m_table02))
+		{
 			return true;
 		}
 	}
@@ -536,6 +552,23 @@ void Scene02::DrawView()
 	unsigned int viewLocation = glGetUniformLocation(m_shaderProgramID, "viewTransform");
 
 	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_cameraController->GetViewMatrix()));
+}
+
+void Scene02::DrawViewByCamera()
+{
+	unsigned int viewLocation = glGetUniformLocation(m_shaderProgramID, "viewTransform");
+
+	glm::vec3 cameraPos = glm::vec3(CameraPos.x, CameraPos.y, CameraPos.z); //--- 카메라 위치
+	glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, 0.0f); //--- 카메라 바라보는 방향
+	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f); //--- 카메라 위쪽 방향
+	glm::mat4 view = glm::mat4(1.0f);
+
+	view = glm::rotate(view, glm::radians(-20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	//view = glm::rotate(view, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 1.0f));
+	view = glm::translate(view, glm::vec3(CameraPos.x, CameraPos.y, CameraPos.z));
+	//view = glm::rotate(view, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
 }
 
 void Scene02::DrawProjection()

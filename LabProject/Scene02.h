@@ -43,6 +43,8 @@ private:
 	int				m_door01;  // ¹®1
 	int				m_door02;  // ¹®2
 
+	vec3			CameraPos;
+
 public:
 	Scene02(CameraController*);
 	~Scene02();
@@ -67,6 +69,7 @@ public:
 
 private:
 	void DrawView();
+	void DrawViewByCamera();
 	void DrawProjection();
 	void DrawLight();
 

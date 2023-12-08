@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 
 
 	glutDisplayFunc(drawScene);
-	glutReshapeFunc(Reshape);
+	// glutReshapeFunc(Reshape);
 
 	// Å°º¸µå
 	glutKeyboardFunc(KeyDownInput);
