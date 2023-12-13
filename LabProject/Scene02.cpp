@@ -284,29 +284,29 @@ void Scene02::InitDoor()
 	// À­¸é ¾Æ·§¸é -> (x, 0.2f, z)
 
 	// ¹®1
-	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->CreateCube(&idx, highp_vec3(161.0f / 255.0f, 157.0f / 255.0f, 148.0f / 255.0f), type);
 	m_ObjectManager->SetScale(idx, 0.1f, 4.0f, 2.0f);
 	m_ObjectManager->SetPosition(idx, 13.0f, 0.7f, 26.5f);
 	m_door01 = idx;
 
-	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->CreateCube(&idx, highp_vec3(161.0f / 255.0f, 157.0f / 255.0f, 148.0f / 255.0f), type);
 	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
 	m_ObjectManager->SetPosition(idx, 29.0f, 0.7f, 16.5f);
 	m_door02 = idx;
 
-	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->CreateCube(&idx, highp_vec3(161.0f / 255.0f, 157.0f / 255.0f, 148.0f / 255.0f), type);
 	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
 	m_ObjectManager->SetPosition(idx, 28.3f, 0.7f, 16.5f);
 
-	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->CreateCube(&idx, highp_vec3(161.0f / 255.0f, 157.0f / 255.0f, 148.0f / 255.0f), type);
 	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
 	m_ObjectManager->SetPosition(idx, 27.6f, 0.7f, 16.5f);
 
-	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->CreateCube(&idx, highp_vec3(161.0f / 255.0f, 157.0f / 255.0f, 148.0f / 255.0f), type);
 	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
 	m_ObjectManager->SetPosition(idx, 29.7f, 0.7f, 16.5f);
 
-	m_ObjectManager->CreateCube(&idx, highp_vec3(1.0f, 1.0f, 1.0f), type);
+	m_ObjectManager->CreateCube(&idx, highp_vec3(161.0f / 255.0f, 157.0f / 255.0f, 148.0f / 255.0f), type);
 	m_ObjectManager->SetScale(idx, 0.2f, 4.0f, 0.2f);
 	m_ObjectManager->SetPosition(idx, 30.4f, 0.7f, 16.5f);
 }
@@ -639,10 +639,6 @@ void Scene02::TextureMapping(ObjectType type)
 	if (type == ObjectType::WALL)
 	{
 		m_texture = stbi_load("wall_texture.jfif", &widthImage, &heightImage, &numberOfChannel, 0);
-	}
-	else if (type == ObjectType::DOOR)
-	{
-		m_texture = stbi_load("iron.jpg", &widthImage, &heightImage, &numberOfChannel, 0);
 	}
 	else
 	{
