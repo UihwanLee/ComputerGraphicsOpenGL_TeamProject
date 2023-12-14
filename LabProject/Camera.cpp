@@ -48,12 +48,6 @@ mat4 Camera::GetRotationMatrix()
 	return rotation;
 }
 
-vec3 Camera::GetRotate()
-{
-	vec3 angle = vec3(mPitch, mYaw, 0.0f);
-	return angle;
-}
-
 vec3 Camera::TryMove(vec3 direction, float amount)
 {
 	direction.y = 0;
@@ -93,6 +87,16 @@ void Camera::TurnTo(vec3 position)
 void Camera::MoveTo(vec3 position)
 {
 	mPosition = position;
+}
+
+float Camera::GetYaw()
+{
+	return mYaw;
+}
+
+float Camera::GetPitch()
+{
+	return mPitch;
 }
 
 void Camera::NormalizeYaw()

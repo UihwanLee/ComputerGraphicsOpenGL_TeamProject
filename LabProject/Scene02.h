@@ -7,6 +7,7 @@
 #include "Physics.h"
 
 
+
 class Scene02
 {
 private:
@@ -16,17 +17,17 @@ private:
 
 	Camera			camera;
 
-	Player*			m_Player;
+	Player* m_Player;
 
-	Renderer*		m_Renderer;
+	Renderer* m_Renderer;
 
 	CameraController* m_cameraController;
 
-	ObjectManager*	m_ObjectManager;
+	ObjectManager* m_ObjectManager;
 
-	Physics*		m_Physics;
+	Physics* m_Physics;
 
-	unsigned char*	m_texture;
+	unsigned char* m_texture;
 
 	int				idx;
 	int				curPickID;

@@ -1,19 +1,18 @@
 #pragma once
 
 #include "pch.h"
-#include "Object.h"
 #include "CameraController.h"
+#include "Object.h"
+#include "Player.h"
 
 class ObjectManager
 {
 public:
-	vector<Object*>		m_ObjectList;
-	GLuint				m_shaderProgramID = 0;
-	CameraController*	m_cameraController;
-
-public:
-	ObjectManager(GLuint shaderProgramID, CameraController* cameraController);
+	ObjectManager();
+	ObjectManager(CameraController* cameraController);
 	~ObjectManager();
+
+	void Init(CameraController*);
 
 	int GetRandomIntValue(GLfloat min, GLfloat max);
 	GLfloat GetRandomFloatValue(GLfloat min, GLfloat max);
@@ -34,6 +33,18 @@ public:
 
 	// ÁÂÇ¥°è º¯È­
 	glm::mat4 TransformModel(int idx);
+
+
+	void Update(float elapsedTime);
+	void Render(class Renderer*);
+
+	vector<Object*>& GetObjectList() { return m_ObjectList; }
+
+public:
+	vector<Object*>	m_ObjectList;
+	Player* m_player;
+	CameraController* m_cameraController;
+
 
 };
 

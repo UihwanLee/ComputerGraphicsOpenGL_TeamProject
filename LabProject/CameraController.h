@@ -1,8 +1,8 @@
 #pragma once
-
 #include "KeyBoard.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Types.h"
 
 class CameraController
 {
@@ -12,16 +12,38 @@ public:
 	~CameraController();
 
 	void Init(vec3 move, vec3 turn);
-
+	void Intersect(float elapsedTime, bool key_w, bool key_s, bool key_a, bool key_d);
 	void KeyDown(unsigned char key);
 	void KeyUp(unsigned char key);
 
 	void MouseDown(int button, int state, int x, int y);
 	void MouseMove(int x, int y);
 
-	void Update(float elapsedTime);
+	void Update(float elapsedTime,
+		bool& key_w, bool& key_s, bool& key_a, bool& key_d);
 
 public:
+	mat4 GetViewMatrix();
+	vec3 GetCameraFront();
+	vec3 GetCameraPosition();
+	Light* GetLight();
+	Camera* GetCamera();
+	KeyBoard* GetKeyBoard();
+
+	void SetView();
+	void SetMoveSpeed(float speed);
+
+private:
+	Camera* m_camera;
+	KeyBoard* m_keyboard;
+	Light* m_light;
+	float move_speed = 30.f;
+
+	bool mMouseControl;
+	OBB cameraOBB;
+
+public:
+	// =============================================
 	bool InputKeyW();
 	bool InputKeyA();
 	bool InputKeyS();
@@ -36,30 +58,14 @@ public:
 	void MoveBack(float elapsedTime);
 	void MoveRight(float elapsedTime);
 	void MoveLeft(float elapsedTime);
-	
+
 	bool IsMouseDown();
 	bool IsMouseControl();
 	bool IsMouseUp();
 
-public:
-	mat4 GetViewMatrix();
-	mat4 GetRotationMatrix();
-	vec3 GetCameraFront();
 
-	vec3 GetPosition();
-	vec3 GetRotate();
+	void Update(float elapsedTime);
 
-	void SetView();
-	Light* GetLight();
-
-private:
-	float		move_speed = 10.f;
-
-	Camera*		m_camera;
-	KeyBoard*	m_keyboard;
-	Light*		m_light;
-
-	bool		mMouseControl;
 	bool		mMouseDown;
 	bool		mMouseUp;
 };

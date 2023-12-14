@@ -7,6 +7,8 @@ public:
 	Light();
 	~Light();
 
+	vec3 GetAttenuation();
+
 	void SetLightPos(vec3 lightpos);
 	void SetLightColor(vec3 lightColor);
 	void SetView(vec3 camerapositon);

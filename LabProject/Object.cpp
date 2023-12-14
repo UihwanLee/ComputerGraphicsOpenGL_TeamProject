@@ -1,21 +1,203 @@
 #include "pch.h"
 #include "Object.h"
+#include "Renderer.h"
+#include "Global.h"
 
 Object::Object()
 {
-	m_position.x = 0.0f; m_position.y = 0.0f; m_position.z = 0.0f;
-	m_rotate.x = 0.0f; m_rotate.y = 0.0f; m_rotate.z = 0.0f;
-	m_scale.x = 1.0f; m_scale.y = 1.0f; m_scale.z = 1.0f;
+	m_position = vec3(0.f);
+	m_rotate = vec3(0.f);
+	m_scale = vec3(1.f);
+	m_type = ObjectType::None;
+	m_close = true;
 
-	m_model = glm::mat4(1.0f);
+	m_obb.center = m_position;
+	m_obb.halfSize = m_scale * vec3(0.5f, 0.5f, 0.5f);  // 예시 크기
+	m_obb.orientation = glm::mat4(1.0f);  // 회전 없음
 
-	m_type = ObjectType::DEFAULT;
-
-	m_bActive = true;
 }
 
 Object::~Object()
 {
+}
+
+void Object::BlickAnimation(float elapsedTime)
+{
+	float move_speed = 250.f;
+	m_position.z += elapsedTime * move_speed;
+}
+
+void Object::RayCasting()
+{
+
+}
+
+bool Object::OBBIntersect(vec3 position)
+{
+	if (!m_close)
+		return false;
+
+	OBB cameraOBB;
+	cameraOBB.center = position;
+	cameraOBB.halfSize = glm::vec3(0.7f, 0.7f, 0.7f);
+	cameraOBB.orientation = glm::mat4(1.0f);
+
+	OBB cubeOBB;
+	cubeOBB.center = m_position;
+
+	if (m_type == ObjectType::Cube)
+		cubeOBB.halfSize = m_scale * vec3(0.5f, 0.5f, 0.5f);
+	else if (m_type == ObjectType::Rinty)
+		cubeOBB.halfSize = m_scale * vec3(0.7f, 0.7f, 0.7f);
+	else if (m_type == ObjectType::Prop) {
+		cubeOBB.center.y = m_position.y + m_scale.y;
+		cubeOBB.halfSize = m_scale * vec3(0.5f, 0.5f, 0.5f);
+	}
+	else if (m_type == ObjectType::Stone) {
+		cubeOBB.halfSize = m_scale * vec3(0.7f, 0.7f, 0.7f);
+	}
+	else if (m_type == ObjectType::Door)
+		cubeOBB.halfSize = m_scale * vec3(0.8f, 0.8f, 0.8f);
+
+	cubeOBB.orientation = glm::mat4(1.0f);
+	glm::vec3 distanceVector = cameraOBB.center - cubeOBB.center;
+	// obb1 좌표 공간에서 obb2 좌표 공간으로 변환
+	glm::mat4 obb1ToWorld = cubeOBB.orientation;
+	glm::mat4 worldToObb2 = glm::inverse(cameraOBB.orientation);
+	glm::vec3 distanceVectorTransformed = glm::vec3(worldToObb2 * obb1ToWorld * glm::vec4(distanceVector, 1.0f));
+
+	for (int i = 0; i < 3; ++i) {
+		glm::vec3 axis = glm::vec3(cubeOBB.orientation[i]);
+
+		float obb1Projection = cubeOBB.halfSize[i];
+		float obb2Projection = cameraOBB.halfSize.x * glm::abs(glm::dot(axis, glm::vec3(worldToObb2[i])));
+		float totalProjection = obb1Projection + obb2Projection;
+
+		if (glm::abs(distanceVectorTransformed[i]) > totalProjection) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void Object::SetPosition(vec3 position)
+{
+	m_position = position;
+	m_obb.center = m_position;
+
+}
+
+void Object::SetRotate(vec3 rotate)
+{
+	m_rotate = rotate;
+}
+
+void Object::SetScale(vec3 scale)
+{
+	m_scale = scale;
+	m_obb.halfSize = m_scale * vec3(0.5f, 0.5f, 0.5f);
+}
+
+void Object::SetType(ObjectType type)
+{
+	m_type = type;
+}
+
+void Object::SetClose(bool close)
+{
+	m_close = close;
+}
+
+void Object::Setid(int id)
+{
+	m_id = id;
+}
+
+OBB Object::GetObb()
+{
+	return m_obb;
+}
+
+ObjectType Object::GetType()
+{
+	return m_type;
+}
+
+vec3 Object::GetPosition()
+{
+	return m_position;
+
+}
+
+vec3 Object::GetSize()
+{
+	return m_scale;
+
+}
+
+
+void Object::Update(float elapsedTime, vec3 position, bool& collision)
+{
+
+	static bool blickAnimation = false;
+
+	switch (m_type)
+	{
+	case ObjectType::Cube:
+	case ObjectType::Prop:
+	case ObjectType::Rinty:
+		if (OBBIntersect(position)) {
+			collision = true;
+		}
+		break;
+	case ObjectType::Stone:
+		if (OBBIntersect(position)) {
+			if (m_id == 46) {
+				g_change = true;
+			}
+		}
+		break;
+	case ObjectType::Blink:
+		if (blickAnimation) {
+			BlickAnimation(elapsedTime);
+		}
+		if (position.z < -190.f && !blickAnimation) {
+			blickAnimation = true;
+		}
+		if (m_position.z >= -10.f) {
+			blickAnimation = false;
+			m_position.z = -10.f;
+		}
+		break;
+	}
+
+
+}
+
+void Object::Render(Renderer* renderer, CameraController* cameracontroller)
+{
+	if (!m_close)
+		return;
+
+	switch (m_type)
+	{
+	case ObjectType::Cube:
+	case ObjectType::Prop:
+	case ObjectType::Stone:
+	case ObjectType::Door:
+		if (m_close)
+			renderer->DrawCubeObj(cameracontroller, m_position, m_rotate, m_scale, m_type);
+		break;
+	case ObjectType::Blink:
+		renderer->DrawRintyObj(cameracontroller, m_position, m_rotate, m_scale, 0.f);
+		break;
+	case ObjectType::Rinty:
+		renderer->DrawRintyObj(cameracontroller, m_position, m_rotate, m_scale, 90.f);
+		break;
+	default:
+		break;
+	}
 }
 
 void Object::SetPosition(float x, float y, float z)
@@ -43,12 +225,6 @@ void Object::SetActive(bool bActive)
 {
 	m_bActive = bActive;
 }
-
-vec3 Object::GetPosition()
-{
-	return m_position;
-}
-
 
 void Object::Move(float x, float y, float z)
 {

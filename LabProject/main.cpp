@@ -3,13 +3,10 @@
 #include "Renderer.h"
 #include "KeyBoard.h"
 #include "CameraController.h"
-#include "LightController.h"
 #include "Game.h"
 
 Game* m_game = nullptr;
 CameraController* m_cameraController = nullptr;
-
-float r{ 0.0 }, g{ 0.0 }, b{ 0.0f };
 
 DWORD g_startTime = 0;
 DWORD g_prevTime = 0;
@@ -26,28 +23,26 @@ GLvoid drawScene()
 	}
 	g_prevTime = currenTime;
 
-
+	float r{ 0.f }, g{ 0.0f }, b{ 0.0f };
 	glClearColor(r, g, b, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// elapsed time (ms -> s)
 	float elapsedTimeInSec = (float)elapsedTime / 1000.f;
 
-	//cout << "elapsedTime      - " << elapsedTime << '\n'; 
-	//cout << "elapsedTimeInSec - " << elapsedTimeInSec << '\n';
-
-
-	// Renderer 
 	m_game->UpdateAll(elapsedTimeInSec);
 	m_game->DrawAll();
 
 	glutSwapBuffers();
 }
 
-void Idle()
+void Idle(void)
 {
-
 	drawScene();
+}
+
+GLvoid Reshape(int w, int h)
+{
+	glViewport(0, 0, w, h);
 }
 
 void MouseInput(int button, int state, int x, int y)
@@ -68,6 +63,7 @@ void KeyDownInput(unsigned char key, int x, int y)
 void KeyUpInput(unsigned char key, int x, int y)
 {
 	m_cameraController->KeyUp(key);
+
 }
 
 void SpecialKeyDownInput(int id, int x, int y)
@@ -78,11 +74,6 @@ void SpecialKeyDownInput(int id, int x, int y)
 void SpecialKeyUpInput(int id, int x, int y)
 {
 
-}
-
-GLvoid Reshape(int w, int h) //--- 콜백 함수: 다시 그리기 콜백 함수
-{
-	glViewport(0, 0, w, h);
 }
 
 int main(int argc, char** argv)
@@ -105,10 +96,9 @@ int main(int argc, char** argv)
 	m_cameraController = new CameraController();
 	m_game = new Game(m_cameraController);
 
-
 	glutDisplayFunc(drawScene);
-	// glutReshapeFunc(Reshape);
-
+	glutIdleFunc(Idle);
+	glutReshapeFunc(Reshape);
 	// 키보드
 	glutKeyboardFunc(KeyDownInput);
 	glutKeyboardUpFunc(KeyUpInput);
@@ -119,11 +109,8 @@ int main(int argc, char** argv)
 	glutMouseFunc(MouseInput);
 	glutMotionFunc(MouseMove);
 
-	// 애니메이션
-	glutIdleFunc(Idle);
-
 	// 화면 출력
-	g_startTime = timeGetTime();  // 시스템이 시작된 후 경과되는 시간을 ms로 받아준다.
+	g_startTime = timeGetTime();
 
 	cout << "===========================================" << endl;
 	cout << "===========================================" << endl;

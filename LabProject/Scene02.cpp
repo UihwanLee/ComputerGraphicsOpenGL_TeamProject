@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Scene02.h"
-#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 float nPointLightPositions = 20;
@@ -31,11 +30,12 @@ Scene02::Scene02(CameraController* cameracontroller)
 {
 	m_Renderer = new Renderer(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	m_ObjectManager = new ObjectManager(m_Renderer->GetShaderProgramID(), cameracontroller);
+	m_ObjectManager = new ObjectManager(cameracontroller);
 
 	m_shaderProgramID = m_Renderer->GetShaderProgramID();
 
 	m_cameraController = cameracontroller;
+	m_cameraController->SetMoveSpeed(10.f);
 	m_cameraController->Init(vec3(0.f, 0.0f, -3.f), vec3(0.f, 0.f, 180.f));
 
 	idx = -1;
@@ -284,6 +284,7 @@ void Scene02::InitDoor()
 	// 윗면 아랫면 -> (x, 0.2f, z)
 
 	// 문1
+
 	m_ObjectManager->CreateCube(&idx, highp_vec3(161.0f / 255.0f, 157.0f / 255.0f, 148.0f / 255.0f), type);
 	m_ObjectManager->SetScale(idx, 0.1f, 4.0f, 2.0f);
 	m_ObjectManager->SetPosition(idx, 13.0f, 0.7f, 26.5f);
@@ -346,24 +347,12 @@ void Scene02::InitObject()
 
 void Scene02::Render()
 {
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	DrawView();
 	DrawProjection();
 	DrawLight();
 
 	DrawStage2();
-
-	/*glViewport(WINDOW_WIDTH / 2.0, WINDOW_HEIGHT / 2.0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-	CameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
-
-	DrawViewByCamera();
-	DrawProjection();
-	DrawLight();
-
-	DrawStage2();
-	DrawEndStage();*/
 }
 
 void Scene02::Update(float elapsedTime)
@@ -485,7 +474,7 @@ bool Scene02::CheckCollisionPickObjByTable()
 void Scene02::CheckDoor()
 {
 	// 제단 오브젝트와 오브젝트 충돌체크
-	if (m_Physics->BBOverlap(m_table01, m_statue)|| m_Physics->BBOverlap(m_table01, m_object01) 
+	if (m_Physics->BBOverlap(m_table01, m_statue) || m_Physics->BBOverlap(m_table01, m_object01)
 		|| m_Physics->BBOverlap(m_table01, m_object02) || m_Physics->BBOverlap(m_table01, m_object03))
 	{
 		if (m_ObjectManager->m_ObjectList[m_door01]->GetPosition().y > -3.0f)
@@ -586,7 +575,6 @@ void Scene02::DrawProjection()
 void Scene02::DrawLight()
 {
 	m_Player->DrawPlayerLight();
-
 	glUniform3fv(glGetUniformLocation(m_shaderProgramID, "pointLightPos"), nPointLightPositions, value_ptr(pointLightPositions[0]));
 }
 

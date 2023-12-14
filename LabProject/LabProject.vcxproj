@@ -137,11 +137,13 @@
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="KeyBoard.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="OBJModel.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -165,10 +167,12 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Figure.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="KeyBoard.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="OBJModel.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
@@ -177,6 +181,7 @@
     <ClInclude Include="Scene02.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="cube.txt" />

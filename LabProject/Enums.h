@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint>
 
 
 #define LEFT_BUTTON 0x0000
@@ -26,17 +25,6 @@ enum class KeyState
 	END
 };
 
-enum ObjectType
-{
-	DEFAULT,
-	WALL,
-	DOOR,
-	TABLE,
-	PICK,
-	PICKING,
-	STICK
-};
-
 enum class SceneType
 {
 	NONE,
@@ -45,6 +33,26 @@ enum class SceneType
 	End,
 };
 
+enum class ObjectType {
+	Cube,		// 벽
+	Prop,		// 석상 받침대
+	Stone,		// 석상
+	Door,		// 문
+	Rinty,		// 링티
+	Player,		// 플레이어
+	Blink,		// 놀래켜 주는 거
+
+	// =============
+	DEFAULT,
+	WALL,
+	DOOR,
+	TABLE,
+	PICK,
+	PICKING,
+	STICK,
+
+	None,
+};
 
 enum
 {

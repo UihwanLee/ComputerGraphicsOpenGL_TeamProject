@@ -12,8 +12,6 @@ public:
 	mat4 GetViewMatrix();
 	mat4 GetRotationMatrix();
 
-	vec3 GetRotate();
-
 	vec3 TryMove(vec3 direction, float amount);
 	void Move(vec3 direction, float amount);
 	void Yaw(float angle);
@@ -21,6 +19,9 @@ public:
 
 	void TurnTo(vec3 position);
 	void MoveTo(vec3 position);
+
+	float GetYaw();
+	float GetPitch();
 
 private:
 	void NormalizeYaw();

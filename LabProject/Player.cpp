@@ -1,5 +1,27 @@
 #include "pch.h"
 #include "Player.h"
+#include "Renderer.h"
+#include "CameraController.h"
+#include "KeyBoard.h"
+
+
+Player::Player()
+{
+
+}
+
+Player::~Player()
+{
+	delete this;
+}
+
+void Player::Update(float elapsedTime, Renderer* renderer, CameraController* cameracontroller, vec3 position, vec3 size)
+{}
+
+void Player::Render(Renderer* renderer, CameraController* cameracontroller)
+{}
+
+// ==============================================
 
 vec3 cameraPos = glm::vec3(0.0f, 0.2f, 0.0f);
 vec3 cameraFront = glm::vec3(0.0f, 0.0f, -2.0f);
@@ -22,11 +44,6 @@ Player::Player(GLuint shaderProgramID, CameraController* cameracontroller, vec3 
 	m_scale = scale;
 
 	m_isMove = true;
-}
-
-Player::~Player()
-{
-	delete this;
 }
 
 void Player::Update(float elapsedTime)
@@ -92,7 +109,3 @@ void Player::DrawPlayerLight()
 	glUniform3f(pLightColor, light->GetLightColor().x, light->GetLightColor().y, light->GetLightColor().z);
 	glUniform3f(pViewPos, light->GetLightviewPos().x, light->GetLightviewPos().y, light->GetLightviewPos().z);
 }
-
-
-
-

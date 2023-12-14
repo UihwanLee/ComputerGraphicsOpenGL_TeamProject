@@ -5,8 +5,8 @@
 class Physics
 {
 private:
-	Player*			m_Player;
-	ObjectManager*	m_ObjectManager;
+	Player* m_Player;
+	ObjectManager* m_ObjectManager;
 
 public:
 	Physics(Player* player, ObjectManager* ObjectManager);

@@ -87,6 +87,12 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="OBJModel.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex.glsl">
@@ -147,6 +153,15 @@
     </ClInclude>
     <ClInclude Include="Physics.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJModel.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

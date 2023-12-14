@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "ObjectManager.h"
 
-ObjectManager::ObjectManager(GLuint shaderProgramID, CameraController* cameraController)
+ObjectManager::ObjectManager()
 {
-	m_shaderProgramID = shaderProgramID;
-	m_ObjectList.clear();
+}
+
+ObjectManager::ObjectManager(CameraController* cameraController)
+{
 	m_cameraController = cameraController;
 }
 
@@ -13,11 +15,7 @@ ObjectManager::~ObjectManager()
 	for (int i = 0; i < m_ObjectList.size(); i++)
 	{
 		delete m_ObjectList[i];
-		m_ObjectList[i] = nullptr;
 	}
-	
-	delete m_cameraController;
-	m_cameraController = nullptr;
 }
 
 int ObjectManager::GetRandomIntValue(GLfloat min, GLfloat max)
@@ -46,6 +44,54 @@ GLfloat ObjectManager::GetRandomFloatValue(GLfloat min, GLfloat max)
 	value = dis(gen);
 
 	return value;
+}
+
+
+void ObjectManager::Init(CameraController* cameracontroller)
+{
+	m_cameraController = cameracontroller;
+	//m_cameraController->Init(vec3(0.f, 5.f, 5.f), vec3(0.f, 0.f, -180.f));
+	m_cameraController->Init(vec3(0.f, -1.f, -3.f), vec3(0.f, 0.f, -180.f));
+	m_player = new Player();
+}
+
+void ObjectManager::Update(float elapsedTime)
+{
+	bool key_w = false;
+	bool key_s = false;
+	bool key_a = false;
+	bool key_d = false;
+
+	m_cameraController->Update(elapsedTime,
+		key_w, key_s, key_a, key_d);
+	vec3 cameraPosition = m_cameraController->GetCameraPosition();
+
+
+
+	bool collision = false;
+	for (Object* object : m_ObjectList) {
+		object->Update(elapsedTime, cameraPosition, collision);
+
+		if (object->GetType() == ObjectType::Stone) {
+			vec3 objectPosition = object->GetPosition();
+			vec3 objectSize = object->GetSize();
+			m_player->Update(elapsedTime, nullptr, m_cameraController, objectPosition, objectSize);
+		}
+	}
+
+	if (collision) {
+		m_cameraController->Intersect(elapsedTime,
+			key_w, key_s, key_a, key_d);
+	}
+}
+
+void ObjectManager::Render(Renderer* renderer)
+{
+	m_player->Render(renderer, m_cameraController);
+
+	for (Object* object : m_ObjectList) {
+		object->Render(renderer, m_cameraController);
+	}
 }
 
 void ObjectManager::CreateFigure(Object* gameObject, highp_vec3 color)
