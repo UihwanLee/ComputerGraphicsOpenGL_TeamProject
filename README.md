@@ -3,7 +3,7 @@
 
 > 게임 이름 : 'Escape Ancient Temples'
 
-![01](https://github.com/UihwanLee/ComputerGraphicsOpenGL_TeamProject/assets/36596037/2bf3bb3a-999e-4b3a-bca8-43696eeb8237)
+[![01](https://github.com/UihwanLee/ComputerGraphicsOpenGL_TeamProject/assets/36596037/2bf3bb3a-999e-4b3a-bca8-43696eeb8237)](https://youtu.be/UERVEDvj-gc?si=lm4WPBTTp1OEBD0x)
 
 > 게임 개요
 
