@@ -11,7 +11,7 @@
 
 > 개발 환경
 
- * [2인 개발 프로젝트]
+[2인 개발 프로젝트]
  * Game Project : VisualStudio2022 
  * Game UI : Adobe Premiere Pro 2020
   
@@ -46,6 +46,17 @@ OpenGL을 이용한 3D 게임 프로젝트. OpenGL을 이용하여 3D 객체 그
 #include <gl/glm/glm.hpp>
 #include <gl/glm/ext.hpp>
 #include <gl/glm/gtc/matrix_transform.hpp>
+
+</code>
+</pre>
+
+<pre>
+<code>
+
+01. 자유시점 움직임
+02. Flashlight & Spotlight
+03. 오브젝트 피킹
+04. 오브젝트 상호작용
 
 </code>
 </pre>
