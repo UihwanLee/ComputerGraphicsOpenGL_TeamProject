@@ -39,12 +39,12 @@ OpenGL을 이용한 3D 게임 프로젝트. OpenGL을 이용하여 3D 객체 그
  
 <pre>
 <code>
-#include '<gl/glew.h>
-#include <gl/freeglut.h>
-#include <gl/freeglut_ext.h>
-#include <gl/glm/glm.hpp>
-#include <gl/glm/ext.hpp>
-#include <gl/glm/gtc/matrix_transform.hpp>
+#include gl/glew.h
+#include gl/freeglut.h
+#include gl/freeglut_ext.h
+#include gl/glm/glm.hpp
+#include gl/glm/ext.hpp
+#include gl/glm/gtc/matrix_transform.hpp
 </code>
 </pre>
 
