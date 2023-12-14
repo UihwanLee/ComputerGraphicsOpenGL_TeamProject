@@ -11,9 +11,9 @@
 
 > 개발 환경
 
+ * [2인 개발 프로젝트]
  * Game Project : VisualStudio2022 
  * Game UI : Adobe Premiere Pro 2020
- * 2인 개발 프로젝트
   
 > 개발 언어 : C++ / C
   
