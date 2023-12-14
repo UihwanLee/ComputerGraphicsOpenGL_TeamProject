@@ -50,6 +50,8 @@ OpenGL을 이용한 3D 게임 프로젝트. OpenGL을 이용하여 3D 객체 그
 </code>
 </pre>
 
+> ### 중점 연구 분야
+
 <pre>
 <code>
 
