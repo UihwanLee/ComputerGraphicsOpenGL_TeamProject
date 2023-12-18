@@ -31,7 +31,9 @@ OpenGL을 이용한 3D 게임 프로젝트. OpenGL을 이용하여 3D 객체 그
 
 > 개발 영상
 
+
  * [최종 발표](https://youtu.be/UERVEDvj-gc?si=lm4WPBTTp1OEBD0x)
+
    
 > ### 사용기술
  
